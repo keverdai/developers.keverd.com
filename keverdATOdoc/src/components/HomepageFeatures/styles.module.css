@@ -1,0 +1,50 @@
+.features {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+  width: 100%;
+  min-height: 75vh;
+}
+
+.featureCard {
+  background: var(--ifm-background-surface-color);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 18px 45px 0 rgba(34, 89, 171, 0.08);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.featureImage {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+.featureTitle {
+  margin-bottom: 0.5rem;
+}
+
+.featureDescription {
+  margin: 0;
+}
+
+@media screen and (max-width: 996px) {
+  .features {
+    padding: 3rem 0;
+    min-height: 75vh;
+  }
+
+  .featureCard {
+    padding: 2rem 1.5rem;
+  }
+
+  .featureImage {
+    width: 110px;
+    height: 110px;
+  }
+}
