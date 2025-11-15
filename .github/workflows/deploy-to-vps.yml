@@ -38,6 +38,7 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > ssh_key
           chmod 600 ssh_key
+          cd ..
           rsync -av --delete -e "ssh -i ssh_key -o StrictHostKeyChecking=no" \
             keverdATOdoc/build/ root@$VPS_HOST:$DEPLOY_PATH/
           rm -f ssh_key
