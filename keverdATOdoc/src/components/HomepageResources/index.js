@@ -7,27 +7,27 @@ const ResourceList = [
   {
     name: 'APIs',
     image: '/img/resources/apis.svg',
-    href: '/docs/api',
+    // href: '/docs/api',
   },
   {
     name: 'SDKs',
     image: '/img/resources/sdks.svg',
-    href: '/docs/sdk',
+    // href: '/docs/sdk',
   },
   {
     name: 'Tutorials',
     image: '/img/resources/tutorials.svg',
-    href: '/docs/tutorial-basics/create-a-document',
+    // href: '/docs/tutorial-basics/create-a-document',
   },
   {
     name: 'Github',
     image: '/img/resources/github.svg',
-    href: 'https://github.com/keverdai/keverd_fraud_sdk_android',
+    // href: 'https://github.com/keverdai/keverd_fraud_sdk_android',
   },
   {
     name: 'Help Center',
     image: '/img/resources/help-center.svg',
-    href: '/docs/intro',
+    // href: '/docs/intro',
   },
 ];
 
