@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: keverdATOdoc   # ← THIS IS THE KEY LINE
+        working-directory: keverdATOdoc
 
     steps:
       - name: Checkout repository
@@ -21,24 +21,24 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: keverdATOdoc/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Docusaurus
+      - name: Build Docusaurus – fails immediately on any broken link
         run: npm run build
 
       - name: Deploy to VPS
         env:
           SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_KEY }}
-          VPS_HOST: 69.164.244.62
-          VPS_USER: root
-          DEPLOY_PATH: /var/www/keverdai
         run: |
-          echo "$SSH_PRIVATE_KEY" > ssh_key
-          chmod 600 ssh_key
+          echo "$SSH_PRIVATE_KEY" > /tmp/deploy_key
+          chmod 600 /tmp/deploy_key
+
           cd ..
-          rsync -av --delete -e "ssh -i ssh_key -o StrictHostKeyChecking=no" \
-            keverdATOdoc/build/ root@$VPS_HOST:$DEPLOY_PATH/
-          rm -f ssh_key
+          rsync -av --delete \
+            -e "ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+            keverdATOdoc/build/ root@69.164.244.62:/var/www/keverdai/
+
+          rm -f /tmp/deploy_key
