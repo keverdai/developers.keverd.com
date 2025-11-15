@@ -28,3 +28,12 @@
   --ifm-color-primary-lightest: #3f7bd0;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/* Footer background color customization - matches hero section */
+.footer {
+  background-color: var(--ifm-color-primary);
+}
+
+[data-theme='dark'] .footer {
+  background-color: var(--ifm-color-primary);
+}

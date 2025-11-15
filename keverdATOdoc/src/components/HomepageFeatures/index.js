@@ -8,9 +8,9 @@ const FeatureList = [
     image: '/img/fast.svg',
     description: (
       <>
-        Data collection completes in under 50ms with total response time under
-        100ms. SDK size is less than 600 KB, ensuring minimal impact on your
-        app.
+        Our APIs and SDKs are designed for optimal performance with minimal
+        overhead. Fast response times and lightweight implementations ensure
+        your applications run smoothly without compromising on functionality.
       </>
     ),
   },
@@ -19,8 +19,9 @@ const FeatureList = [
     image: '/img/secure.png',
     description: (
       <>
-        All sensitive identifiers are SHA-256 hashed client-side. HTTPS-only
-        communication is enforced, and no raw PII is stored or logged.
+        Security is built into every service we offer. All our APIs and SDKs
+        follow industry best practices with encrypted communications, secure
+        data handling, and comprehensive protection mechanisms.
       </>
     ),
   },
@@ -29,8 +30,9 @@ const FeatureList = [
     image: '/img/easy.png',
     description: (
       <>
-        Simple API with comprehensive documentation. Get started in minutes with
-        just a few lines of code. Perfect for fintech applications.
+        Comprehensive documentation, code samples, and tutorials make it easy to
+        integrate our services into your applications. Get started quickly with
+        clear guides and well-designed APIs.
       </>
     ),
   },
