@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+          cache-dependency-path: keverdATOdoc/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -27,7 +28,7 @@ jobs:
       - name: Deploy to VPS
         env:
           SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_KEY }}
-          VPS_HOST: 216.198.79.65
+          VPS_HOST: 69.164.244.62
           VPS_USER: root
           DEPLOY_PATH: /var/www/keverdai
         run: |
