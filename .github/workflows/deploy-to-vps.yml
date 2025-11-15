@@ -8,39 +8,33 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: keverdATOdoc
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+      
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-          # We're already inside keverdATOdoc → just point to the file in current dir
-          cache-dependency-path: package-lock.json
-
+          cache-dependency-path: keverdATOdoc/package-lock.json
+      
       - name: Install dependencies
+        working-directory: keverdATOdoc
         run: npm ci
-
-      - name: Build Docusaurus – fails immediately on any broken link
+      
+      - name: Build Docusaurus
+        working-directory: keverdATOdoc
         run: npm run build
-        # Strict mode: any broken link = CI fails (exactly what you want)
-
+      
       - name: Deploy to VPS
         env:
           SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_KEY }}
         run: |
           echo "$SSH_PRIVATE_KEY" > /tmp/deploy_key
           chmod 600 /tmp/deploy_key
-
-          cd ..
           rsync -av --delete \
             -e "ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
             keverdATOdoc/build/ root@69.164.244.62:/var/www/keverdai/
-
           rm -f /tmp/deploy_key
