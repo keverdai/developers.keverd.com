@@ -51,8 +51,7 @@ const config = {
           routeBasePath: '/docs',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/keverdai/keverd_fraud_sdk_android/tree/main/docs/',
+          editUrl: 'https://github.com/keverdai/',
         },
         blog: false,
         theme: {
@@ -77,7 +76,7 @@ const config = {
             label: 'Documentation',
           },
           {
-            href: 'https://github.com/keverdai/keverd_fraud_sdk_android',
+            href: 'https://github.com/keverdai',
             label: 'GitHub',
             position: 'right',
           },

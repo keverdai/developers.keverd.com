@@ -16,15 +16,25 @@
   "dependencies": {
     "@docusaurus/core": "3.9.2",
     "@docusaurus/preset-classic": "3.9.2",
+    "@llamaindex/groq": "^0.0.93",
+    "@llamaindex/huggingface": "^0.1.31",
+    "@llamaindex/openai": "^0.4.21",
+    "@llamaindex/readers": "^3.1.21",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
+    "dotenv": "^17.2.3",
+    "llamaindex": "^0.12.0",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-markdown": "^10.1.0",
+    "rehype-starry-night": "^2.2.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.9.2",
-    "@docusaurus/types": "3.9.2"
+    "@docusaurus/types": "3.9.2",
+    "@types/node": "^24.10.1"
   },
   "browserslist": {
     "production": [
