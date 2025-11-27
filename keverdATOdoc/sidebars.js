@@ -28,17 +28,7 @@ const sidebars = {
       label: 'API Reference',
       items: ['api'],
     },
-    {
-      type: 'category',
-      label: 'Architecture & Development',
-      items: ['architecture', 'development', 'build', 'testing'],
-    },
-    {
-      type: 'category',
-      label: 'Publishing',
-      items: ['maven-central-setup'],
-    },
-    'changelog',
+
   ],
 };
 
