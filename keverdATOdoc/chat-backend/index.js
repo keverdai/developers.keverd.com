@@ -16,22 +16,49 @@ Settings.embedModel = new HuggingFaceEmbedding({
   modelType: 'BAAI/bge-small-en-v1.5',
 });
 
-// ADD this: LlamaIndex Groq LLM for query engine (fixes Settings.llm)
+// LlamaIndex Groq LLM for query engine — only enabled when GROQ API key is present.
 const { Groq: GroqLLM } = require('@llamaindex/groq');
-Settings.llm = new GroqLLM({
-  model: 'llama-3.3-70b-versatile',
-  apiKey: process.env.GROQ_API_KEY,
-  temperature: 0.2,
-});
+
+function readGroqApiKey() {
+  if (process.env.GROQ_API_KEY && process.env.GROQ_API_KEY.trim()) {
+    return process.env.GROQ_API_KEY.trim();
+  }
+
+  const keyFile = process.env.GROQ_API_KEY_FILE;
+  if (keyFile && fs.existsSync(keyFile)) {
+    try {
+      return fs.readFileSync(keyFile, 'utf8').trim();
+    } catch (e) {
+      console.warn('Unable to read GROQ_API_KEY_FILE:', e.message);
+    }
+  }
+
+  return null;
+}
+
+const GROQ_API_KEY = readGroqApiKey();
+if (GROQ_API_KEY) {
+  Settings.llm = new GroqLLM({
+    model: 'llama-3.3-70b-versatile',
+    apiKey: GROQ_API_KEY,
+    temperature: 0.2,
+  });
+} else {
+  console.warn(
+    '\n⚠️  GROQ_API_KEY is not set. Groq LLM features will be disabled.'
+  );
+  Settings.llm = null;
+}
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 let index = null;
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-});
+let groq = null;
+if (GROQ_API_KEY) {
+  groq = new Groq({ apiKey: GROQ_API_KEY });
+}
 
 async function getIndex() {
   if (index) return index;
@@ -84,12 +111,18 @@ app.post('/api/chat', async (req, res) => {
     // Get the index
     const vectorIndex = await getIndex();
 
-    // Create a query engine instead of retriever
-    const queryEngine = vectorIndex.asQueryEngine({
-      retriever: vectorIndex.asRetriever({
-        similarityTopK: 5,
-      }),
-    });
+    // Only create a full query engine when an LLM is configured — otherwise
+    // skip asQueryEngine (it will attempt to use Settings.llm and throw if
+    // the LLM isn't present). We still create a retriever for retrieval-only
+    // scenarios.
+    let queryEngine = null;
+    if (GROQ_API_KEY) {
+      queryEngine = vectorIndex.asQueryEngine({
+        retriever: vectorIndex.asRetriever({ similarityTopK: 5 }),
+      });
+    } else {
+      console.log('LLM not configured — starting in retrieval-only mode');
+    }
 
     // Retrieve nodes directly from the retriever
     const retriever = vectorIndex.asRetriever({
@@ -125,6 +158,13 @@ app.post('/api/chat', async (req, res) => {
         return `[Document ${idx + 1}]\n${text}`;
       })
       .join('\n\n---\n\n');
+
+    if (!groq) {
+      return res.status(503).json({
+        error:
+          'LLM/generation not available - GROQ_API_KEY is not configured. Provide a key to enable generation.',
+      });
+    }
 
     console.log('Generating response with Groq...');
 
@@ -181,7 +221,7 @@ app.get('/health', (req, res) => {
     status: 'ok',
     embeddings: 'HuggingFace (local)',
     llm: 'Groq (cloud)',
-    hasApiKey: !!process.env.GROQ_API_KEY,
+    hasApiKey: !!GROQ_API_KEY,
     indexLoaded: !!index,
   });
 });
