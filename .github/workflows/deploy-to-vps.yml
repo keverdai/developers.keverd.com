@@ -1,5 +1,4 @@
 name: Deploy to developers.keverd.com
-
 on:
   push:
     branches: [ main ]
@@ -31,10 +30,14 @@ jobs:
       - name: Deploy to VPS
         env:
           SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_PATH: ${{ secrets.VPS_PATH }}
         run: |
-          echo "$SSH_PRIVATE_KEY" > /tmp/deploy_key
-          chmod 600 /tmp/deploy_key
-          rsync -av --delete \
-            -e "ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
-            keverdATOdoc/build/ root@69.164.244.62:/var/www/keverdai/
-          rm -f /tmp/deploy_key
+          mkdir -p ~/.ssh
+          printf "%s\n" "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+            keverdATOdoc/build/ ${VPS_USER}@${VPS_HOST}:${VPS_PATH}
+          rm -f ~/.ssh/deploy_key
