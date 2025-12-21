@@ -1,0 +1,122 @@
+name: Deploy Developers Site
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  # Build and test job
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run linter
+      run: npm run lint
+      continue-on-error: true
+
+    - name: Build Next.js application
+      run: npm run build
+      env:
+        NODE_ENV: production
+        NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL || 'https://developers.keverd.com' }}
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: nextjs-build
+        path: |
+          .next
+          public
+        retention-days: 1
+
+  # Deploy job (only on main/master branch)
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: nextjs-build
+        path: .
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install production dependencies
+      run: npm ci --production=false
+
+    - name: Copy files to VPS
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        source: "."
+        target: "/var/www/developers.keverd.com"
+        strip_components: 0
+        rm: false
+
+    - name: Build and restart service on VPS
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        script: |
+          cd /var/www/developers.keverd.com
+          
+          # Install/update dependencies
+          echo "📦 Installing dependencies..."
+          npm ci
+          
+          # Build the application
+          echo "🔨 Building Next.js application..."
+          export NODE_ENV=production
+          export NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL:-https://developers.keverd.com}
+          npm run build
+          
+          # Restart the service (adjust service name as needed)
+          if systemctl is-active --quiet developers-keverd-com; then
+            echo "🔄 Restarting developers-keverd-com service..."
+            sudo systemctl restart developers-keverd-com
+            sudo systemctl status developers-keverd-com
+          elif systemctl is-active --quiet nextjs-developers; then
+            echo "🔄 Restarting nextjs-developers service..."
+            sudo systemctl restart nextjs-developers
+            sudo systemctl status nextjs-developers
+          else
+            echo "⚠️  No systemd service found. Using PM2 or manual process..."
+            # If using PM2
+            if command -v pm2 &> /dev/null; then
+              pm2 restart developers-keverd-com || pm2 start npm --name "developers-keverd-com" -- start
+            else
+              echo "⚠️  Please restart the application manually"
+            fi
+          fi
+          
+          echo "✅ Deployment completed successfully!"
+
