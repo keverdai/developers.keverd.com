@@ -35,6 +35,22 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Smooth fade-in animation for code snippet transitions */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
 /* Button Styles */
 .btn-primary {
   @apply inline-flex items-center justify-center px-6 py-3 font-semibold bg-keverd-blue text-white shadow-sm transition-all duration-300 ease-out;

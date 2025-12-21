@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Navbar } from "./Navbar";
 import { Card } from "./Card";
@@ -24,6 +25,128 @@ import {
   Sparkles,
   CheckCircle2,
 } from "lucide-react";
+
+const sdkCodeExamples = [
+  {
+    name: "Android SDK",
+    language: "kotlin",
+    code: String.raw`// Initialize SDK
+val config = Config(
+    apiBaseUrl = "https://app.keverd.com",
+    apiKey = "YOUR_API_KEY"
+)
+val sdk = KeverdFingerprint.init(context, config)
+
+// Submit fingerprint
+sdk.submit("user123") { result ->
+    when (result) {
+        is Result.Success -> {
+            println("Risk Score: \${result.score}")
+        }
+        is Result.Error -> {
+            println("Error: \${result.error}")
+        }
+    }
+}`,
+  },
+  {
+    name: "Vanilla JavaScript",
+    language: "javascript",
+    code: String.raw`// Initialize SDK
+import { Keverd } from '@keverdjs/fraud-sdk';
+
+Keverd.init({
+  apiKey: 'YOUR_API_KEY',
+  endpoint: 'https://app.keverd.com'
+});
+
+// Get visitor data
+const visitorData = await Keverd.getVisitorData();
+console.log('Risk Score:', visitorData.riskScore);`,
+  },
+  {
+    name: "React SDK",
+    language: "javascript",
+    code: String.raw`// Setup Provider
+import { KeverdProvider } from '@keverdjs/fraud-sdk-react';
+
+function App() {
+  return (
+    <KeverdProvider
+      apiKey="YOUR_API_KEY"
+      endpoint="https://app.keverd.com"
+    >
+      <YourApp />
+    </KeverdProvider>
+  );
+}
+
+// Use in components
+import { useKeverdVisitorData } from '@keverdjs/fraud-sdk-react';
+
+function MyComponent() {
+  const { data, isLoading, error } = useKeverdVisitorData({
+    immediate: true
+  });
+  
+  return <div>Risk Score: {data?.riskScore}</div>;
+}`,
+  },
+  {
+    name: "Vue.js SDK",
+    language: "javascript",
+    code: String.raw`// Setup Plugin
+import { createApp } from 'vue';
+import KeverdPlugin from '@keverdjs/fraud-sdk-vue';
+
+const app = createApp(App);
+app.use(KeverdPlugin, {
+  apiKey: 'YOUR_API_KEY',
+  endpoint: 'https://app.keverd.com'
+});
+
+// Use in components
+import { useKeverdVisitorData } from '@keverdjs/fraud-sdk-vue';
+
+export default {
+  setup() {
+    const { data, loading, error } = useKeverdVisitorData({
+      immediate: true
+    });
+    
+    return { data, loading, error };
+  }
+}`,
+  },
+  {
+    name: "Angular SDK",
+    language: "typescript",
+    code: String.raw`// Setup Module
+import { KeverdModule } from '@keverdjs/fraud-sdk-angular';
+
+@NgModule({
+  imports: [
+    KeverdModule.forRoot({
+      apiKey: 'YOUR_API_KEY',
+      endpoint: 'https://app.keverd.com'
+    })
+  ]
+})
+export class AppModule {}
+
+// Use in components
+import { KeverdService } from '@keverdjs/fraud-sdk-angular';
+
+constructor(private keverd: KeverdService) {}
+
+ngOnInit() {
+  this.keverd.getVisitorData().subscribe({
+    next: (data) => console.log('Risk Score:', data.riskScore),
+    error: (err) => console.error(err)
+  });
+}`,
+  },
+];
 
 const sdks = [
   {
@@ -91,6 +214,10 @@ const features = [
 ];
 
 export function HomePage() {
+  const [currentSdkIndex, setCurrentSdkIndex] = useState(0);
+
+  const currentExample = sdkCodeExamples[currentSdkIndex];
+
   return (
     <div className="min-h-screen bg-keverd-sand/20">
       <Navbar />
@@ -100,27 +227,78 @@ export function HomePage() {
         {/* Hero Section */}
         <section className="relative py-12 md:py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <div className="text-left max-w-4xl">
-              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-keverd-ink mb-6 leading-tight">
-                Keverd Developer
-                <span className="text-keverd-blue"> Documentation</span>
-              </h1>
-              <p className="text-lg md:text-xl text-gray-700 mb-8 leading-relaxed max-w-3xl">
-                Complete documentation for Keverd fraud detection SDKs. Get started with Android, JavaScript, React, Vue, and Angular in minutes.
-              </p>
-              
-              <div className="flex flex-wrap gap-4 mb-8">
-                <Button href="/getting-started" variant="primary" size="lg">
-                  Get Started
-                  <ArrowRight className="ml-2" size={20} />
-                </Button>
-                <Button href="/docs" variant="ghost" size="lg">
-                  Browse Docs
-                  <BookOpen className="ml-2" size={20} />
-                </Button>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+              {/* Left Side - Text Content */}
+              <div className="text-left">
+                <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-keverd-ink mb-6 leading-tight">
+                  Keverd Developer
+                  <span className="text-keverd-blue"> Documentation</span>
+                </h1>
+                <p className="text-lg md:text-xl text-gray-700 mb-8 leading-relaxed">
+                  Complete documentation for Keverd fraud detection SDKs. Get started with Android, JavaScript, React, Vue, and Angular in minutes.
+                </p>
+                
+                <div className="flex flex-wrap gap-4 mb-8">
+                  <Button href="/getting-started" variant="primary" size="lg">
+                    Get Started
+                    <ArrowRight className="ml-2" size={20} />
+                  </Button>
+                  <Button href="/docs" variant="ghost" size="lg">
+                    Browse Docs
+                    <BookOpen className="ml-2" size={20} />
+                  </Button>
+                </div>
+
+                <SearchBar placeholder="Search documentation, APIs, SDKs..." className="max-w-2xl" />
               </div>
 
-              <SearchBar placeholder="Search documentation, APIs, SDKs..." className="max-w-2xl" />
+              {/* Right Side - Code Snippet with Tabs */}
+              <div className="lg:sticky lg:top-24">
+                <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col" style={{ height: '500px' }}>
+                  {/* Mac-style Header with Traffic Light Buttons */}
+                  <div className="flex items-center gap-2 bg-gray-50 border-b border-gray-200 px-3 py-2 flex-shrink-0">
+                    {/* Mac Traffic Light Buttons */}
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                      <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                      <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    </div>
+                    
+                    {/* Editor-style Tabs */}
+                    <div className="flex items-center gap-1 flex-1 overflow-x-auto ml-2">
+                      {sdkCodeExamples.map((example, index) => (
+                        <button
+                          key={example.name}
+                          onClick={() => setCurrentSdkIndex(index)}
+                          className={`px-3 py-1.5 text-xs font-medium rounded-t transition-all whitespace-nowrap ${
+                            index === currentSdkIndex
+                              ? "bg-white text-keverd-blue border-t border-l border-r border-gray-200"
+                              : "text-gray-600 hover:text-keverd-blue hover:bg-gray-100"
+                          }`}
+                          aria-label={`Show ${example.name} example`}
+                        >
+                          {example.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Code Content with Smooth Transition - Fixed Height */}
+                  <div className="p-4 relative flex-1 overflow-hidden">
+                    <div
+                      key={currentSdkIndex}
+                      className="animate-fade-in h-full overflow-y-auto"
+                    >
+                      <CodeSnippet
+                        code={currentExample.code}
+                        language={currentExample.language}
+                        autoType={false}
+                        showCopy={true}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
