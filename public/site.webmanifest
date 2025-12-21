@@ -1,0 +1,17 @@
+{
+  "name": "Keverd Developer Documentation",
+  "short_name": "Keverd Docs",
+  "description": "Complete documentation for Keverd fraud detection SDKs",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/images/logo.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}
+
