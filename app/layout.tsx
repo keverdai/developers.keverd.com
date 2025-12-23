@@ -1,20 +1,14 @@
 import type { Metadata } from "next";
-import { Kumbh_Sans, Inter } from "next/font/google";
+import { Manrope } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { Navbar } from "./components/Navbar";
 import { generateMetadata as genMeta } from "./lib/seo";
 
-const kumbhSans = Kumbh_Sans({
-  variable: "--font-display",
+const manrope = Manrope({
+  variable: "--font-base",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-const inter = Inter({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -41,9 +35,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${kumbhSans.variable} ${inter.variable} antialiased`}
+        className={`${manrope.variable} antialiased`}
         style={{
-          fontFamily: "var(--font-sans)",
+          fontFamily: "var(--font-base)",
         }}
       >
         {children}

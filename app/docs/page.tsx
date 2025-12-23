@@ -5,7 +5,15 @@ import Link from "next/link";
 import { Card } from "../components/Card";
 import { Button } from "../components/Button";
 import { CodeSnippet } from "../components/CodeSnippet";
+import { TableOfContents } from "../components/TableOfContents";
+import { StructuredData } from "../components/StructuredData";
 import { Smartphone, Globe, Code, FileCode, ArrowRight, CheckCircle2 } from "lucide-react";
+
+const tableOfContents = [
+  { id: "overview", title: "Overview" },
+  { id: "integration-example", title: "Quick Integration" },
+  { id: "available-sdks", title: "Available SDKs" },
+];
 
 const sdkCodeExamples = [
   {
@@ -181,81 +189,95 @@ export default function DocsPage() {
   const currentExample = sdkCodeExamples[currentSdkIndex];
 
   return (
-    <div className="p-4">
-      <div className="mb-12">
-        <h1 className="section-title mb-6">Documentation</h1>
-        <p className="text-gray-600 text-lg">
-          Comprehensive guides and API references for all Keverd SDKs
-        </p>
-      </div>
-
-      {/* Rotating Code Snippet */}
-      <div className="mb-12">
-        <div className="mb-4">
-          <h2 className="font-display text-xl md:text-2xl font-bold text-keverd-ink mb-2">
-            Quick Integration Example
-          </h2>
-          <p className="text-gray-600">
-            See how easy it is to integrate Keverd with your favorite framework
-          </p>
-        </div>
-        <div className="relative">
-          <CodeSnippet
-            code={currentExample.code}
-            language={currentExample.language}
-            autoType={false}
-            className="mb-4"
-          />
-          <div className="flex items-center justify-center gap-2 mt-4">
-            {sdkCodeExamples.map((example, index) => (
-              <button
-                key={example.name}
-                onClick={() => setCurrentSdkIndex(index)}
-                className={`h-2 rounded-full transition-all ${
-                  index === currentSdkIndex
-                    ? "w-8 bg-keverd-blue"
-                    : "w-2 bg-gray-300 hover:bg-gray-400"
-                }`}
-                aria-label={`Show ${example.name} example`}
-              />
-            ))}
+    <>
+      <StructuredData
+        title="Keverd Developer Documentation"
+        description="Complete documentation for Keverd fraud detection SDKs - Android, Web, React, Vue, and Angular. Get started with fraud detection in minutes."
+        path="/docs"
+        type="TechArticle"
+      />
+      <div className="flex max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <TableOfContents items={tableOfContents} />
+        <main className="flex-1 max-w-4xl px-10 sm:px-12 lg:px-20 py-12">
+          <div id="overview" className="mb-12 scroll-mt-20">
+            <h1 className="section-title mb-6">Documentation</h1>
+            <p className="text-gray-600 text-lg">
+              Comprehensive guides and API references for all Keverd SDKs
+            </p>
           </div>
-          <p className="text-center text-sm text-gray-500 mt-2">
-            {currentExample.name}
-          </p>
-        </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {sdks.map((sdk) => {
-          const Icon = sdk.icon;
-          return (
-            <Link key={sdk.name} href={sdk.href}>
-              <Card className="hover:border-keverd-blue transition-colors cursor-pointer h-full">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="p-3 bg-keverd-blue/10 rounded-xl">
-                    <Icon className="text-keverd-blue" size={24} />
-                  </div>
-                  {sdk.status === "ready" && (
-                    <CheckCircle2 className="text-green-600" size={20} />
-                  )}
-                  {sdk.status === "coming-soon" && (
-                    <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-semibold">
-                      Soon
-                    </span>
-                  )}
-                </div>
-                <h3 className="keverd-card-title mb-2">{sdk.name}</h3>
-                <p className="keverd-card-body">{sdk.description}</p>
-                <div className="mt-4 flex items-center text-keverd-blue font-medium text-sm">
-                  View documentation
-                  <ArrowRight className="ml-2" size={16} />
-                </div>
-              </Card>
-            </Link>
-          );
-        })}
+          {/* Rotating Code Snippet */}
+          <div id="integration-example" className="mb-12 scroll-mt-20">
+            <div className="mb-4">
+              <h2 className="font-display text-xl md:text-2xl font-bold text-keverd-ink mb-2">
+                Quick Integration Example
+              </h2>
+              <p className="text-gray-600">
+                See how easy it is to integrate Keverd with your favorite framework
+              </p>
+            </div>
+            <div className="relative">
+              <CodeSnippet
+                code={currentExample.code}
+                language={currentExample.language}
+                autoType={false}
+                className="mb-4"
+              />
+              <div className="flex items-center justify-center gap-2 mt-4">
+                {sdkCodeExamples.map((example, index) => (
+                  <button
+                    key={example.name}
+                    onClick={() => setCurrentSdkIndex(index)}
+                    className={`h-2 rounded-full transition-all ${
+                      index === currentSdkIndex
+                        ? "w-8 bg-keverd-blue"
+                        : "w-2 bg-gray-300 hover:bg-gray-400"
+                    }`}
+                    aria-label={`Show ${example.name} example`}
+                  />
+                ))}
+              </div>
+              <p className="text-center text-sm text-gray-500 mt-2">
+                {currentExample.name}
+              </p>
+            </div>
+          </div>
+
+          <div id="available-sdks" className="scroll-mt-20">
+            <h2 className="section-title mb-8">Available SDKs</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {sdks.map((sdk) => {
+                const Icon = sdk.icon;
+                return (
+                  <Link key={sdk.name} href={sdk.href}>
+                    <Card className="hover:border-keverd-blue transition-colors cursor-pointer h-full">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="p-3 bg-keverd-blue/10 rounded-xl">
+                          <Icon className="text-keverd-blue" size={24} />
+                        </div>
+                        {sdk.status === "ready" && (
+                          <CheckCircle2 className="text-green-600" size={20} />
+                        )}
+                        {sdk.status === "coming-soon" && (
+                          <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-semibold">
+                            Soon
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="keverd-card-title mb-2">{sdk.name}</h3>
+                      <p className="keverd-card-body">{sdk.description}</p>
+                      <div className="mt-4 flex items-center text-keverd-blue font-medium text-sm">
+                        View documentation
+                        <ArrowRight className="ml-2" size={16} />
+                      </div>
+                    </Card>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </main>
       </div>
-    </div>
+    </>
   );
 }

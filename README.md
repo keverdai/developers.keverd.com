@@ -79,8 +79,7 @@ developers.keverd.com/
 
 The site uses the same design system as the dashboard:
 - Keverd brand colors (blue, gold, ink, clay, sand, dusk)
-- Kumbh Sans for display text
-- Inter for body text
+- Manrope for all text (display and body)
 - Tailwind CSS for styling
 
 ## License
