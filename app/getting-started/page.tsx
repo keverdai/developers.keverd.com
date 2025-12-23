@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Navbar } from "../components/Navbar";
 import { Button } from "../components/Button";
 import { CodeSnippet } from "../components/CodeSnippet";
@@ -38,6 +39,8 @@ const tableOfContents = [
 ];
 
 export default function GettingStartedPage() {
+  const [selectedPlatform, setSelectedPlatform] = useState<"android" | "web">("web");
+
   return (
     <>
       <StructuredData
@@ -406,7 +409,7 @@ function HomePage() {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <h3 className="font-semibold text-keverd-ink text-lg">Choose Your SDK</h3>
+                    <h3 className="font-semibold text-keverd-ink text-lg">Choose Your Platform</h3>
                     <Link
                       href="/docs"
                       className="text-sm text-keverd-blue hover:underline inline-flex items-center gap-1"
@@ -415,34 +418,107 @@ function HomePage() {
                       <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </Link>
                   </div>
-                  <p className="text-gray-700 mb-3 leading-relaxed">
-                    Next, choose the SDK that matches your application's platform and programming language. Keverd provides SDKs for Android (Kotlin), Vanilla JavaScript, React, Vue.js, and Angular. Each SDK is designed to integrate seamlessly with its target platform, following platform-specific best practices and conventions.
+                  <p className="text-gray-700 mb-4 leading-relaxed">
+                    Next, choose the SDK that matches your application's platform. Keverd provides SDKs for Android (Kotlin) and multiple web frameworks (Vanilla JavaScript, React, Vue.js, and Angular). Each SDK is designed to integrate seamlessly with its target platform.
                   </p>
-                  <p className="text-gray-700 mb-3 leading-relaxed">
-                    If you're building a web application, choose the JavaScript SDK for vanilla JavaScript applications, the React SDK for React applications, the Vue.js SDK for Vue 3 applications, or the Angular SDK for Angular applications. If you're building a mobile application, choose the Android SDK for Android apps. For detailed information about each SDK, including installation instructions and code examples, see the <Link href="/docs" className="text-keverd-blue hover:underline font-semibold">SDK documentation</Link>.
-                  </p>
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-4">
-                    <Link href="/docs/android" className="text-center p-3 bg-keverd-blue/10 hover:bg-keverd-blue/20 border-2 border-keverd-blue/30 rounded-lg transition-colors">
-                      <Smartphone className="text-keverd-blue mx-auto mb-1" size={20} />
-                      <span className="text-xs font-semibold block text-keverd-ink">Android</span>
-                    </Link>
-                    <Link href="/docs/javascript" className="text-center p-3 bg-keverd-gold/20 hover:bg-keverd-gold/30 border-2 border-keverd-gold/40 rounded-lg transition-colors">
-                      <Globe className="text-keverd-clay mx-auto mb-1" size={20} />
-                      <span className="text-xs font-semibold block text-keverd-ink">JavaScript</span>
-                    </Link>
-                    <Link href="/docs/react" className="text-center p-3 bg-keverd-clay/10 hover:bg-keverd-clay/20 border-2 border-keverd-clay/30 rounded-lg transition-colors">
-                      <Code className="text-keverd-clay mx-auto mb-1" size={20} />
-                      <span className="text-xs font-semibold block text-keverd-ink">React</span>
-                    </Link>
-                    <Link href="/docs/vue" className="text-center p-3 bg-keverd-blue/10 hover:bg-keverd-blue/20 border-2 border-keverd-blue/30 rounded-lg transition-colors">
-                      <FileCode className="text-keverd-blue mx-auto mb-1" size={20} />
-                      <span className="text-xs font-semibold block text-keverd-ink">Vue.js</span>
-                    </Link>
-                    <Link href="/docs/angular" className="text-center p-3 bg-keverd-gold/20 hover:bg-keverd-gold/30 border-2 border-keverd-gold/40 rounded-lg transition-colors">
-                      <FileCode className="text-keverd-clay mx-auto mb-1" size={20} />
-                      <span className="text-xs font-semibold block text-keverd-ink">Angular</span>
-                    </Link>
+                  
+                  {/* Platform Toggle */}
+                  <div className="mb-4 flex gap-2 p-1 bg-gray-100 rounded-lg w-fit">
+                    <button
+                      onClick={() => setSelectedPlatform("android")}
+                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                        selectedPlatform === "android"
+                          ? "bg-white text-keverd-ink shadow-sm"
+                          : "text-gray-600 hover:text-keverd-ink"
+                      }`}
+                    >
+                      <span className="flex items-center gap-2">
+                        <Smartphone size={16} />
+                        Android
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => setSelectedPlatform("web")}
+                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                        selectedPlatform === "web"
+                          ? "bg-white text-keverd-ink shadow-sm"
+                          : "text-gray-600 hover:text-keverd-ink"
+                      }`}
+                    >
+                      <span className="flex items-center gap-2">
+                        <Globe size={16} />
+                        Web
+                      </span>
+                    </button>
                   </div>
+
+                  {/* Android Instructions */}
+                  {selectedPlatform === "android" && (
+                    <div className="space-y-4">
+                      <div className="bg-keverd-blue/5 rounded-xl p-6 border border-keverd-blue/20">
+                        <h4 className="font-semibold text-keverd-ink mb-3">Android SDK Installation</h4>
+                        <p className="text-sm text-gray-700 mb-4">Add the dependency to your <code className="bg-white/50 px-1.5 py-0.5 rounded text-xs">build.gradle.kts</code> file:</p>
+                        <CodeSnippet
+                          code={`repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("com.keverd:sdk:1.0.0")
+}`}
+                          language="kotlin"
+                        />
+                        <p className="text-sm text-gray-700 mt-4 mb-2">Add required permissions to your <code className="bg-white/50 px-1.5 py-0.5 rounded text-xs">AndroidManifest.xml</code>:</p>
+                        <CodeSnippet
+                          code={`<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />`}
+                          language="xml"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Web Instructions */}
+                  {selectedPlatform === "web" && (
+                    <div className="space-y-4">
+                      <div className="bg-keverd-gold/10 rounded-xl p-6 border border-keverd-gold/30">
+                        <h4 className="font-semibold text-keverd-ink mb-3">Web SDK Installation</h4>
+                        <p className="text-sm text-gray-700 mb-4">Choose your framework and install the corresponding package:</p>
+                        
+                        <div className="space-y-3">
+                          <div>
+                            <p className="text-sm font-medium text-keverd-ink mb-1">Vanilla JavaScript:</p>
+                            <CodeSnippet
+                              code={`npm install @keverdjs/fraud-sdk`}
+                              language="bash"
+                            />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-keverd-ink mb-1">React:</p>
+                            <CodeSnippet
+                              code={`npm install @keverdjs/fraud-sdk-react`}
+                              language="bash"
+                            />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-keverd-ink mb-1">Vue.js:</p>
+                            <CodeSnippet
+                              code={`npm install @keverdjs/fraud-sdk-vue`}
+                              language="bash"
+                            />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-keverd-ink mb-1">Angular:</p>
+                            <CodeSnippet
+                              code={`npm install @keverdjs/fraud-sdk-angular`}
+                              language="bash"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -453,13 +529,106 @@ function HomePage() {
                   </div>
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-keverd-ink mb-2 text-lg">Install the SDK</h3>
-                  <p className="text-gray-700 mb-3 leading-relaxed">
-                    Install the SDK using your platform's package manager or dependency management tool. For web SDKs (JavaScript, React, Vue, Angular), use npm or yarn. For Android, add the dependency to your <code className="bg-keverd-sand/50 px-1 rounded text-sm">build.gradle</code> file. Each SDK's documentation includes detailed installation instructions with code examples.
-                  </p>
-                  <p className="text-gray-700 leading-relaxed">
-                    After installation, import the SDK into your application code. The exact import statement depends on your chosen SDK, but typically you'll import a main class or function (like <code className="bg-keverd-sand/50 px-1 rounded text-sm">Keverd</code> for JavaScript or <code className="bg-keverd-sand/50 px-1 rounded text-sm">KeverdFingerprint</code> for Android) and any additional components or hooks you need.
-                  </p>
+                  <h3 className="font-semibold text-keverd-ink mb-2 text-lg">Initialize the SDK</h3>
+                  
+                  {selectedPlatform === "android" && (
+                    <div className="space-y-4">
+                      <p className="text-gray-700 mb-3 leading-relaxed">
+                        Initialize the SDK in your <code className="bg-keverd-sand/50 px-1 rounded text-sm">Application</code> class:
+                      </p>
+                      <CodeSnippet
+                        code={`import com.keverd.sdk.Config
+import com.keverd.sdk.KeverdFingerprint
+
+class MyApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        
+        val config = Config(
+            apiBaseUrl = "https://app.keverd.com",
+            apiKey = "YOUR_API_KEY",
+            consentRequired = true
+        )
+        
+        KeverdFingerprint.init(this, config)
+    }
+}`}
+                        language="kotlin"
+                      />
+                      <p className="text-gray-700 mt-4 leading-relaxed">
+                        Then submit fingerprints and receive risk scores:
+                      </p>
+                      <CodeSnippet
+                        code={`val sdk = KeverdFingerprint.init(context, config)
+
+lifecycleScope.launch {
+    sdk.submit("user123") { result ->
+        when (result) {
+            is Result.Success -> {
+                println("Risk Score: \${result.score}")
+            }
+            is Result.Error -> {
+                println("Error: \${result.error}")
+            }
+        }
+    }
+}`}
+                        language="kotlin"
+                      />
+                    </div>
+                  )}
+
+                  {selectedPlatform === "web" && (
+                    <div className="space-y-4">
+                      <div className="mb-4">
+                        <p className="text-sm font-medium text-keverd-ink mb-2">Vanilla JavaScript:</p>
+                        <CodeSnippet
+                          code={`import { Keverd } from '@keverdjs/fraud-sdk';
+
+Keverd.init({
+  apiKey: 'YOUR_API_KEY',
+  endpoint: 'https://app.keverd.com'
+});
+
+// Get visitor data
+const visitorData = await Keverd.getVisitorData();
+console.log('Risk Score:', visitorData.riskScore);`}
+                          language="javascript"
+                        />
+                      </div>
+                      
+                      <div className="mb-4">
+                        <p className="text-sm font-medium text-keverd-ink mb-2">React:</p>
+                        <CodeSnippet
+                          code={`import { KeverdProvider } from '@keverdjs/fraud-sdk-react';
+
+function App() {
+  return (
+    <KeverdProvider
+      loadOptions={{
+        apiKey: 'YOUR_API_KEY'
+      }}
+    >
+      <YourApp />
+    </KeverdProvider>
+  );
+}
+
+// Use in components
+import { useKeverdVisitorData } from '@keverdjs/fraud-sdk-react';
+
+function MyComponent() {
+  const { data, isLoading, error } = useKeverdVisitorData({
+    immediate: true
+  });
+  
+  return <div>Risk Score: {data?.riskScore}</div>;
+}`}
+                          language="javascript"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -470,15 +639,12 @@ function HomePage() {
                   </div>
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-keverd-ink mb-2 text-lg">Initialize and Use</h3>
+                  <h3 className="font-semibold text-keverd-ink mb-2 text-lg">Start Using</h3>
                   <p className="text-gray-700 mb-3 leading-relaxed">
-                    Initialize the SDK with your API key and start collecting visitor data. The initialization process varies by SDK, but typically involves calling an <code className="bg-keverd-sand/50 px-1 rounded text-sm">init()</code> method with your API key. Some SDKs (like React and Vue) use provider components or plugins for initialization.
-                  </p>
-                  <p className="text-gray-700 mb-3 leading-relaxed">
-                    Once initialized, you can retrieve visitor data and risk assessments. The SDK handles all the complexity of data collection, hashing, and API communication automatically. You'll receive a response containing the risk score, recommended action, and additional metadata that you can use to make security decisions in your application.
+                    Once initialized, the SDK automatically collects device and behavioral data, sends it to the Keverd API, and returns risk assessments. You'll receive a response containing the risk score (0-100), recommended action (allow, soft_challenge, hard_challenge, or block), and additional metadata.
                   </p>
                   <p className="text-gray-700 leading-relaxed">
-                    For detailed code examples and API references for each SDK, see the specific SDK documentation pages linked above. Each SDK's documentation includes complete examples showing initialization, data retrieval, error handling, and best practices.
+                    For detailed code examples and API references for each SDK, see the specific SDK documentation pages. Each SDK's documentation includes complete examples showing initialization, data retrieval, error handling, and best practices.
                   </p>
                 </div>
               </div>
