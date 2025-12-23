@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Kumbh_Sans, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { Navbar } from "./components/Navbar";
 import { generateMetadata as genMeta } from "./lib/seo";
@@ -46,6 +47,7 @@ export default function RootLayout({
         }}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
