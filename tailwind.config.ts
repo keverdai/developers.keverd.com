@@ -19,8 +19,7 @@ const config: Config = {
       },
       fontFamily: {
         display: [
-          "Kumbh Sans",
-          "Inter",
+          "Manrope",
           "ui-sans-serif",
           "system-ui",
           "-apple-system",
@@ -31,7 +30,18 @@ const config: Config = {
           "sans-serif",
         ],
         sans: [
-          "Inter",
+          "Manrope",
+          "ui-sans-serif",
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica",
+          "Arial",
+          "sans-serif",
+        ],
+        base: [
+          "Manrope",
           "ui-sans-serif",
           "system-ui",
           "-apple-system",
