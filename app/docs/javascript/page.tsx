@@ -209,6 +209,69 @@ try {
                   </div>
 
                   <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">verifyLogin(userId?: string, metadata?: Record&lt;string, any&gt;): Promise&lt;FingerprintResponse&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Use-case-specific method for login verification. Collects enhanced behavioral signals optimized for login scenarios (typing patterns, form interactions, copy-paste detection) and sends them to the Keverd API with <code className="bg-white/50 px-1 rounded border border-gray-200">use_case: "login"</code>.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong></p>
+                      <ul className="text-xs text-gray-600 ml-4 space-y-1">
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">userId</code> (optional): User identifier for profile matching</li>
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">metadata</code> (optional): Additional metadata to include in the request</li>
+                      </ul>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;FingerprintResponse&gt;</code> - Same response format as <code className="bg-white/50 px-1 rounded border border-gray-200">getVisitorData()</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">verifyCheckout(amount?: number, currency?: string, metadata?: Record&lt;string, any&gt;): Promise&lt;FingerprintResponse&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Use-case-specific method for checkout/payment verification. Optimized for detecting fraud during payment flows with enhanced form interaction and behavioral analysis.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong></p>
+                      <ul className="text-xs text-gray-600 ml-4 space-y-1">
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">amount</code> (optional): Transaction amount</li>
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">currency</code> (optional): Currency code (e.g., "USD", "KES")</li>
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">metadata</code> (optional): Additional metadata</li>
+                      </ul>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;FingerprintResponse&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">verifyRegistration(metadata?: Record&lt;string, any&gt;): Promise&lt;FingerprintResponse&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Use-case-specific method for account registration verification. Detects bot signups and suspicious registration patterns.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong></p>
+                      <ul className="text-xs text-gray-600 ml-4 space-y-1">
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">metadata</code> (optional): Additional metadata</li>
+                      </ul>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;FingerprintResponse&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">verifyPasswordReset(metadata?: Record&lt;string, any&gt;): Promise&lt;FingerprintResponse&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Use-case-specific method for password reset verification. High-risk use case requiring enhanced security checks.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong></p>
+                      <ul className="text-xs text-gray-600 ml-4 space-y-1">
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">metadata</code> (optional): Additional metadata</li>
+                      </ul>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;FingerprintResponse&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">verifyAccountChange(metadata?: Record&lt;string, any&gt;): Promise&lt;FingerprintResponse&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Use-case-specific method for account modification verification (email change, phone change, etc.).</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong></p>
+                      <ul className="text-xs text-gray-600 ml-4 space-y-1">
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">metadata</code> (optional): Additional metadata</li>
+                      </ul>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;FingerprintResponse&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
                     <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">createTransactionID(metadata?: TransactionMetadata): Promise&lt;string&gt;</h4>
                     <p className="text-sm text-gray-700 mb-3 leading-relaxed">Legacy method for backward compatibility. This method internally calls <code className="bg-white/50 px-1 rounded border border-gray-200">getVisitorData()</code> and returns the <code className="bg-white/50 px-1 rounded border border-gray-200">session_id</code> from the response. For new implementations, use <code className="bg-white/50 px-1 rounded border border-gray-200">getVisitorData()</code> instead, as it provides more comprehensive information including the risk score.</p>
                     <div className="mt-3 space-y-1">
@@ -597,6 +660,29 @@ document.addEventListener('DOMContentLoaded', () => {
                   <li><strong>Avoid excessive calls:</strong> Don't call <code className="bg-white/50 px-1 rounded border border-gray-200">getVisitorData()</code> on every page load or user interaction. Use it strategically for high-value or high-risk operations.</li>
                   <li><strong>Handle asynchronously:</strong> Always use <code className="bg-white/50 px-1 rounded border border-gray-200">await</code> or <code className="bg-white/50 px-1 rounded border border-gray-200">.then()</code> when calling <code className="bg-white/50 px-1 rounded border border-gray-200">getVisitorData()</code>, as it returns a Promise.</li>
                   <li><strong>Implement retry logic:</strong> For transient errors, implement retry logic with exponential backoff to improve reliability.</li>
+                </ul>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-3">Use-Case-Specific Methods</h3>
+                <ul className="text-sm text-gray-700 ml-4 space-y-2 list-disc leading-relaxed">
+                  <li><strong>Use appropriate methods:</strong> Use <code className="bg-white/50 px-1 rounded border border-gray-200">verifyLogin()</code> for login flows, <code className="bg-white/50 px-1 rounded border border-gray-200">verifyCheckout()</code> for payment flows, etc. This provides better context for risk scoring.</li>
+                  <li><strong>Login verification:</strong> Call <code className="bg-white/50 px-1 rounded border border-gray-200">verifyLogin()</code> before authenticating the user. Block or challenge high-risk attempts (risk_score ≥ 70).</li>
+                  <li><strong>Checkout verification:</strong> Call <code className="bg-white/50 px-1 rounded border border-gray-200">verifyCheckout()</code> before processing payment. Require additional verification for medium-risk checkouts (risk_score 30-69).</li>
+                  <li><strong>Registration verification:</strong> Use <code className="bg-white/50 px-1 rounded border border-gray-200">verifyRegistration()</code> to detect bot signups. Block high-risk registrations automatically.</li>
+                  <li><strong>Password reset:</strong> Always use <code className="bg-white/50 px-1 rounded border border-gray-200">verifyPasswordReset()</code> for password reset flows. This is a high-risk operation that requires extra scrutiny.</li>
+                </ul>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-3">Risk Score Interpretation</h3>
+                <ul className="text-sm text-gray-700 ml-4 space-y-2 list-disc leading-relaxed">
+                  <li><strong>0-29 (Low Risk):</strong> Allow the operation. User behavior matches their profile and shows no suspicious patterns.</li>
+                  <li><strong>30-69 (Medium Risk):</strong> Require additional verification (MFA, CAPTCHA, email confirmation). User behavior is unusual but not clearly fraudulent.</li>
+                  <li><strong>70-100 (High Risk):</strong> Block the operation or require manual review. Strong indicators of fraud or account takeover.</li>
+                  <li><strong>Context matters:</strong> A risk score of 50 for login is more concerning than 50 for registration. Adjust thresholds based on use case.</li>
+                  <li><strong>Combine with other signals:</strong> Use risk scores alongside other security measures (rate limiting, IP reputation, etc.) for defense in depth.</li>
+                  <li><strong>Monitor trends:</strong> Track risk score trends over time. Sudden increases may indicate a new attack vector.</li>
                 </ul>
               </div>
 

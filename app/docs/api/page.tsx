@@ -14,6 +14,7 @@ const tableOfContents = [
   { id: "request-format", title: "Request Format", level: 2 },
   { id: "response-format", title: "Response Format", level: 2 },
   { id: "risk-scores", title: "Risk Score Interpretation", level: 2 },
+  { id: "verification-endpoints", title: "Use-Case Verification Endpoints" },
   { id: "error-handling", title: "Error Handling" },
   { id: "authentication", title: "Authentication" },
   { id: "rate-limiting", title: "Rate Limiting" },
@@ -574,6 +575,72 @@ X-SDK-Source: javascript
             </div>
           </div>
         </div>
+          </section>
+
+          {/* Verification Endpoints */}
+          <section id="verification-endpoints" className="mb-10 pb-10 border-b border-gray-200 scroll-mt-20">
+            <h2 className="section-title mb-6">Use-Case Verification Endpoints</h2>
+            <p className="text-gray-600 mb-6">
+              These endpoints are optimized for specific use cases and automatically set the <code className="bg-gray-100 px-1 rounded">use_case</code> parameter. 
+              They accept the same request format as <code className="bg-gray-100 px-1 rounded">/fingerprint/score</code> and return the same response format.
+            </p>
+
+            <div className="space-y-6">
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="px-3 py-1 bg-keverd-blue/10 text-keverd-blue rounded-full text-xs font-semibold border border-keverd-blue/20">
+                    POST
+                  </span>
+                  <h3 className="font-semibold text-keverd-ink text-lg">/fingerprint/verify/login</h3>
+                </div>
+                <p className="text-gray-700 text-sm mb-3">Verify user identity during login attempts. Optimized for detecting account takeover and credential stuffing.</p>
+                <p className="text-xs text-gray-600"><strong>Use Case:</strong> Automatically set to <code className="bg-gray-100 px-1 rounded">"login"</code></p>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="px-3 py-1 bg-keverd-blue/10 text-keverd-blue rounded-full text-xs font-semibold border border-keverd-blue/20">
+                    POST
+                  </span>
+                  <h3 className="font-semibold text-keverd-ink text-lg">/fingerprint/verify/checkout</h3>
+                </div>
+                <p className="text-gray-700 text-sm mb-3">Verify user during checkout/payment flows. Detects payment fraud and stolen card usage.</p>
+                <p className="text-xs text-gray-600"><strong>Use Case:</strong> Automatically set to <code className="bg-gray-100 px-1 rounded">"checkout"</code></p>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="px-3 py-1 bg-keverd-blue/10 text-keverd-blue rounded-full text-xs font-semibold border border-keverd-blue/20">
+                    POST
+                  </span>
+                  <h3 className="font-semibold text-keverd-ink text-lg">/fingerprint/verify/registration</h3>
+                </div>
+                <p className="text-gray-700 text-sm mb-3">Verify new account registrations. Detects bot signups and fake accounts.</p>
+                <p className="text-xs text-gray-600"><strong>Use Case:</strong> Automatically set to <code className="bg-gray-100 px-1 rounded">"registration"</code></p>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="px-3 py-1 bg-keverd-blue/10 text-keverd-blue rounded-full text-xs font-semibold border border-keverd-blue/20">
+                    POST
+                  </span>
+                  <h3 className="font-semibold text-keverd-ink text-lg">/fingerprint/verify/password-reset</h3>
+                </div>
+                <p className="text-gray-700 text-sm mb-3">Verify password reset requests. High-risk use case requiring enhanced security checks.</p>
+                <p className="text-xs text-gray-600"><strong>Use Case:</strong> Automatically set to <code className="bg-gray-100 px-1 rounded">"password_reset"</code></p>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="px-3 py-1 bg-keverd-blue/10 text-keverd-blue rounded-full text-xs font-semibold border border-keverd-blue/20">
+                    POST
+                  </span>
+                  <h3 className="font-semibold text-keverd-ink text-lg">/fingerprint/verify/account-change</h3>
+                </div>
+                <p className="text-gray-700 text-sm mb-3">Verify account modification requests (email change, phone change, etc.).</p>
+                <p className="text-xs text-gray-600"><strong>Use Case:</strong> Automatically set to <code className="bg-gray-100 px-1 rounded">"account_change"</code></p>
+              </div>
+            </div>
           </section>
 
           {/* Error Handling */}
