@@ -239,12 +239,12 @@ export function HomePage() {
                 </p>
                 
                 <div className="flex flex-wrap gap-4 mb-8">
-                  <Button href="/getting-started" variant="primary" size="lg">
-                    Get Started
+                  <Button href="/docs" variant="primary" size="lg">
+                    Browse Documentation
                     <ArrowRight className="ml-2" size={20} />
                   </Button>
-                  <Button href="/docs" variant="ghost" size="lg">
-                    Browse Docs
+                  <Button href="/docs/api" variant="ghost" size="lg">
+                    View API Reference
                     <BookOpen className="ml-2" size={20} />
                   </Button>
                 </div>
