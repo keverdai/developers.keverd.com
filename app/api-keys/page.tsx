@@ -147,7 +147,7 @@ export default function APIKeysPage() {
                   </h3>
                   <CodeSnippet
                     code={String.raw`val config = Config(
-    apiBaseUrl = "https://app.keverd.com",
+    apiBaseUrl = "https://api.keverd.com",
     apiKey = "your-api-key-here",
     consentRequired = true
 )
@@ -168,7 +168,7 @@ val sdk = KeverdFingerprint.init(context, config)`}
 
 Keverd.init({
   apiKey: 'your-api-key-here',
-  endpoint: 'https://app.keverd.com'
+  endpoint: 'https://api.keverd.com'
 });`}
                     language="javascript"
                   />

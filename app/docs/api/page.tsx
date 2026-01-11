@@ -63,7 +63,7 @@ export default function APIRefPage() {
             <div className="bg-keverd-blue/5 rounded-xl p-6 border border-keverd-blue/20 space-y-4">
           <div>
             <h3 className="font-semibold text-keverd-ink mb-2">Base URL</h3>
-            <code className="bg-gray-100 px-3 py-1 rounded text-sm">https://app.keverd.com</code>
+            <code className="bg-gray-100 px-3 py-1 rounded text-sm">https://api.keverd.com</code>
           </div>
           <div>
             <h3 className="font-semibold text-keverd-ink mb-2">Authentication</h3>
@@ -124,7 +124,7 @@ export default function APIRefPage() {
                   This is the format used by all Keverd SDKs. It provides a structured, nested format that's easier to work with.
                 </p>
                 <CodeSnippet
-                  code={String.raw`POST https://app.keverd.com/fingerprint/score
+                  code={String.raw`POST https://api.keverd.com/fingerprint/score
 Content-Type: application/json
 x-keverd-key: your-api-key-here
 X-SDK-Source: javascript
@@ -859,7 +859,7 @@ Authorization: Bearer your-api-key-here`}
           <div>
             <h3 className="font-semibold text-keverd-ink mb-2">cURL Example</h3>
             <CodeSnippet
-              code={String.raw`curl -X POST https://app.keverd.com/fingerprint/score \
+              code={String.raw`curl -X POST https://api.keverd.com/fingerprint/score \
   -H "Content-Type: application/json" \
   -H "x-keverd-key: your-api-key-here" \
   -d '{
@@ -883,7 +883,7 @@ Authorization: Bearer your-api-key-here`}
           <div>
             <h3 className="font-semibold text-keverd-ink mb-2">JavaScript/Fetch Example</h3>
             <CodeSnippet
-              code={String.raw`const response = await fetch('https://app.keverd.com/fingerprint/score', {
+              code={String.raw`const response = await fetch('https://api.keverd.com/fingerprint/score', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -917,7 +917,7 @@ console.log('Action:', data.action);`}
             <CodeSnippet
               code={String.raw`import requests
 
-url = "https://app.keverd.com/fingerprint/score"
+url = "https://api.keverd.com/fingerprint/score"
 headers = {
     "Content-Type": "application/json",
     "x-keverd-key": "your-api-key-here"

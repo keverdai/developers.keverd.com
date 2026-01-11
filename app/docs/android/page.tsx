@@ -134,7 +134,7 @@ dependencies {
                   Initialize the SDK in your <code className="bg-white/50 px-1 rounded text-sm border border-gray-200">Application</code> class. This ensures the SDK is initialized once when your app starts, following the singleton pattern. The SDK uses the application context internally to prevent memory leaks.
                 </p>
                 <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                  <strong>Important:</strong> The <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">apiBaseUrl</code> must use HTTPS. The SDK will throw an <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">IllegalArgumentException</code> if you provide an HTTP URL. The default API endpoint is <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">https://app.keverd.com</code>.
+                  <strong>Important:</strong> The <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">apiBaseUrl</code> must use HTTPS. The SDK will throw an <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">IllegalArgumentException</code> if you provide an HTTP URL. The default API endpoint is <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">https://api.keverd.com</code>.
                 </p>
                 <CodeSnippet
                   code={String.raw`import com.keverd.sdk.Config
@@ -145,7 +145,7 @@ class MyApplication : Application() {
         super.onCreate()
         
         val config = Config(
-            apiBaseUrl = "https://app.keverd.com",
+            apiBaseUrl = "https://api.keverd.com",
             apiKey = "your-api-key-here",
             consentRequired = true
         )
@@ -310,7 +310,7 @@ fun submitFingerprint(userId: String) {
                           <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">String</code></td>
                           <td className="py-3 px-4 text-gray-700">Yes</td>
                           <td className="py-3 px-4 text-gray-700">—</td>
-                          <td className="py-3 px-4 text-gray-700">Base URL for the fingerprint API endpoint. Must start with "https://" (HTTP is not allowed for security). The default production endpoint is <code className="bg-white/50 px-1 rounded border border-gray-200">https://app.keverd.com</code>. The SDK will throw an <code className="bg-white/50 px-1 rounded border border-gray-200">IllegalArgumentException</code> if the URL does not use HTTPS.</td>
+                          <td className="py-3 px-4 text-gray-700">Base URL for the fingerprint API endpoint. Must start with "https://" (HTTP is not allowed for security). The default production endpoint is <code className="bg-white/50 px-1 rounded border border-gray-200">https://api.keverd.com</code>. The SDK will throw an <code className="bg-white/50 px-1 rounded border border-gray-200">IllegalArgumentException</code> if the URL does not use HTTPS.</td>
                         </tr>
                         <tr className="border-b border-gray-200">
                           <td className="py-3 px-4 font-mono text-sm text-keverd-ink">apiKey</td>
@@ -508,7 +508,7 @@ class MainActivity : AppCompatActivity() {
         
         // Initialize SDK
         val config = Config(
-            apiBaseUrl = "https://app.keverd.com",
+            apiBaseUrl = "https://api.keverd.com",
             apiKey = "your-api-key",
             consentRequired = true
         )

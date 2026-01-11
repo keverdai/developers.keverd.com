@@ -162,7 +162,7 @@ export default function GettingStartedPage() {
               </p>
 
               <p>
-                <strong className="text-keverd-ink">Cloud-Based API:</strong> Our API endpoint (<code className="bg-keverd-sand/50 px-1.5 py-0.5 rounded text-sm">https://app.keverd.com/fingerprint/score</code>) receives fingerprint data from your SDKs and returns risk assessments in real-time. The API is built for scale, with sub-100ms response times (p99) and the ability to handle millions of requests per day. All API communication is encrypted using HTTPS, and we provide comprehensive rate limiting and monitoring.
+                <strong className="text-keverd-ink">Cloud-Based API:</strong> Our API endpoint (<code className="bg-keverd-sand/50 px-1.5 py-0.5 rounded text-sm">https://api.keverd.com/fingerprint/score</code>) receives fingerprint data from your SDKs and returns risk assessments in real-time. The API is built for scale, with sub-100ms response times (p99) and the ability to handle millions of requests per day. All API communication is encrypted using HTTPS, and we provide comprehensive rate limiting and monitoring.
               </p>
 
               <p>
@@ -545,7 +545,7 @@ class MyApplication : Application() {
         super.onCreate()
         
         val config = Config(
-            apiBaseUrl = "https://app.keverd.com",
+            apiBaseUrl = "https://api.keverd.com",
             apiKey = "YOUR_API_KEY",
             consentRequired = true
         )
@@ -587,7 +587,7 @@ lifecycleScope.launch {
 
 Keverd.init({
   apiKey: 'YOUR_API_KEY',
-  endpoint: 'https://app.keverd.com'
+  endpoint: 'https://api.keverd.com'
 });
 
 // Get visitor data

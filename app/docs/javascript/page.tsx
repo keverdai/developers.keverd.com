@@ -96,7 +96,7 @@ export default function JavaScriptDocsPage() {
                   Import the SDK and initialize it with your API key. The SDK follows a singleton pattern, so you only need to initialize it once in your application. Initialization is synchronous and non-blocking, but you should call it early in your application lifecycle (e.g., in your main entry point or app initialization code).
                 </p>
                 <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                  <strong>Important:</strong> The <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">endpoint</code> must use HTTPS. The SDK will throw an error if you provide an HTTP URL. The default API endpoint is <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">https://app.keverd.com</code>.
+                  <strong>Important:</strong> The <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">endpoint</code> must use HTTPS. The SDK will throw an error if you provide an HTTP URL. The default API endpoint is <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">https://api.keverd.com</code>.
                 </p>
                 <CodeSnippet
                   code={String.raw`import { Keverd } from '@keverdjs/fraud-sdk';
@@ -107,7 +107,7 @@ Keverd.init('your-api-key-here');
 // Or with full configuration object
 Keverd.init({
   apiKey: 'your-api-key-here',
-  endpoint: 'https://app.keverd.com', // Optional: defaults to https://app.keverd.com
+  endpoint: 'https://api.keverd.com', // Optional: defaults to https://api.keverd.com
   userId: 'user-123', // Optional: user identifier
   debug: true, // Optional: enable debug logging (default: false)
 });`}
@@ -327,8 +327,8 @@ try {
                           <td className="py-3 px-4 font-mono text-sm text-keverd-ink">endpoint</td>
                           <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">string</code></td>
                           <td className="py-3 px-4 text-gray-700">No</td>
-                          <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">'https://app.keverd.com'</code></td>
-                          <td className="py-3 px-4 text-gray-700">Base URL for the fingerprint API endpoint. Must start with "https://" (HTTP is not allowed for security). The default production endpoint is <code className="bg-white/50 px-1 rounded border border-gray-200">https://app.keverd.com</code>. Only change this if you're using a custom endpoint or testing environment.</td>
+                          <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">'https://api.keverd.com'</code></td>
+                          <td className="py-3 px-4 text-gray-700">Base URL for the fingerprint API endpoint. Must start with "https://" (HTTP is not allowed for security). The default production endpoint is <code className="bg-white/50 px-1 rounded border border-gray-200">https://api.keverd.com</code>. Only change this if you're using a custom endpoint or testing environment.</td>
                         </tr>
                         <tr className="border-b border-gray-200">
                           <td className="py-3 px-4 font-mono text-sm text-keverd-ink">userId</td>
@@ -481,7 +481,7 @@ try {
 // Initialize SDK (call this once when your app loads)
 Keverd.init({
   apiKey: process.env.REACT_APP_KEVERD_API_KEY, // Use environment variables
-  endpoint: 'https://app.keverd.com',
+  endpoint: 'https://api.keverd.com',
   debug: process.env.NODE_ENV === 'development' // Enable debug in dev only
 });
 
@@ -609,7 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('SDK not initialized. Call Keverd.init() first.');
     Keverd.init({
       apiKey: 'your-api-key-here',
-      endpoint: 'https://app.keverd.com'
+      endpoint: 'https://api.keverd.com'
     });
     // Retry after initialization
     setTimeout(() => checkRisk(), 100);

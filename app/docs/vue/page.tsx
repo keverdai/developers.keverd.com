@@ -100,7 +100,7 @@ yarn add vue@^3.0.0`}
                   You can use the SDK in two ways: install it as a Vue plugin (recommended for global access) or use the <code className="bg-white/50 px-1 rounded text-sm border border-gray-200">useKeverdProvider</code> composable in your root component.
                 </p>
                 <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                  <strong>Important:</strong> The <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">endpoint</code> must use HTTPS. The SDK will throw an error if you provide an HTTP URL. The default API endpoint is <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">https://app.keverd.com</code>.
+                  <strong>Important:</strong> The <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">endpoint</code> must use HTTPS. The SDK will throw an error if you provide an HTTP URL. The default API endpoint is <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">https://api.keverd.com</code>.
                 </p>
                 <p className="text-sm text-gray-600 mb-4 leading-relaxed">
                   <strong>Option A - Plugin Installation (Recommended):</strong> Install the SDK as a Vue plugin for global access across all components.
@@ -114,7 +114,7 @@ const app = createApp(App);
 
 app.use(KeverdPlugin, {
   apiKey: process.env.VUE_APP_KEVERD_API_KEY, // Use environment variables
-  endpoint: 'https://app.keverd.com', // Optional: defaults to https://app.keverd.com
+  endpoint: 'https://api.keverd.com', // Optional: defaults to https://api.keverd.com
   debug: process.env.NODE_ENV === 'development', // Enable debug in dev only
 });
 
@@ -131,7 +131,7 @@ import { useKeverdProvider } from '@keverdjs/fraud-sdk-vue';
 // Setup provider (call once in root component, e.g., App.vue)
 useKeverdProvider({
   apiKey: import.meta.env.VITE_KEVERD_API_KEY,
-  endpoint: 'https://app.keverd.com',
+  endpoint: 'https://api.keverd.com',
   debug: import.meta.env.DEV
 });
 </script>`}
@@ -261,7 +261,7 @@ const riskLevel = computed(() => {
                             <td className="py-3 px-4 font-mono text-sm text-keverd-ink">endpoint</td>
                             <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">string</code></td>
                             <td className="py-3 px-4 text-gray-700">No</td>
-                            <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">'https://app.keverd.com'</code></td>
+                            <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">'https://api.keverd.com'</code></td>
                             <td className="py-3 px-4 text-gray-700">Base URL for the fingerprint API endpoint. Must start with "https://" (HTTP is not allowed for security). Only change this if you're using a custom endpoint or testing environment.</td>
                           </tr>
                           <tr className="border-b border-gray-200">
@@ -455,7 +455,7 @@ import { useKeverdProvider, useKeverdVisitorData } from '@keverdjs/fraud-sdk-vue
 // Setup provider (in root component)
 useKeverdProvider({
   apiKey: 'your-api-key-here',
-  endpoint: 'https://app.keverd.com',
+  endpoint: 'https://api.keverd.com',
   debug: false
 });
 
@@ -529,7 +529,7 @@ const app = createApp(App);
 
 app.use(KeverdPlugin, {
   apiKey: 'your-api-key-here',
-  endpoint: 'https://app.keverd.com',
+  endpoint: 'https://api.keverd.com',
   debug: false
 });
 
