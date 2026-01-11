@@ -99,7 +99,7 @@ yarn add react react-dom`}
                   The <code className="bg-white/50 px-1 rounded text-sm border border-gray-200">KeverdProvider</code> component initializes the SDK and provides it to all child components via React Context. Wrap your root component (or the highest component that needs access to the SDK) with <code className="bg-white/50 px-1 rounded text-sm border border-gray-200">KeverdProvider</code>.
                 </p>
                 <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                  <strong>Important:</strong> The <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">endpoint</code> must use HTTPS. The SDK will throw an error if you provide an HTTP URL. The default API endpoint is <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">https://app.keverd.com</code>.
+                  <strong>Important:</strong> The <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">endpoint</code> must use HTTPS. The SDK will throw an error if you provide an HTTP URL. The default API endpoint is <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">https://api.keverd.com</code>.
                 </p>
                 <p className="text-sm text-gray-600 mb-4 leading-relaxed">
                   <strong>For Next.js:</strong> Place the provider in your <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">_app.tsx</code> or <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">_app.js</code> file. For Create React App or other React setups, place it in your root <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">App.js</code> or <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">index.js</code>.
@@ -113,7 +113,7 @@ function MyApp({ Component, pageProps }) {
     <KeverdProvider
       loadOptions={{
         apiKey: process.env.NEXT_PUBLIC_KEVERD_API_KEY, // Use environment variables
-        endpoint: 'https://app.keverd.com', // Optional: defaults to https://app.keverd.com
+        endpoint: 'https://api.keverd.com', // Optional: defaults to https://api.keverd.com
         debug: process.env.NODE_ENV === 'development', // Enable debug in dev only
       }}
     >
@@ -266,7 +266,7 @@ export default function Home() {
                             <td className="py-3 px-4 font-mono text-sm text-keverd-ink">endpoint</td>
                             <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">string</code></td>
                             <td className="py-3 px-4 text-gray-700">No</td>
-                            <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">'https://app.keverd.com'</code></td>
+                            <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">'https://api.keverd.com'</code></td>
                             <td className="py-3 px-4 text-gray-700">Base URL for the fingerprint API endpoint. Must start with "https://" (HTTP is not allowed for security). Only change this if you're using a custom endpoint or testing environment.</td>
                           </tr>
                           <tr className="border-b border-gray-200">
@@ -287,7 +287,7 @@ export default function Home() {
                       code={String.raw`<KeverdProvider
   loadOptions={{
     apiKey: process.env.NEXT_PUBLIC_KEVERD_API_KEY,
-    endpoint: 'https://app.keverd.com',
+    endpoint: 'https://api.keverd.com',
     debug: process.env.NODE_ENV === 'development',
   }}
 >
@@ -489,7 +489,7 @@ function App() {
     <KeverdProvider
       loadOptions={{
         apiKey: 'your-api-key-here',
-        endpoint: 'https://app.keverd.com',
+        endpoint: 'https://api.keverd.com',
         debug: false,
       }}
     >
