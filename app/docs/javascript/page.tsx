@@ -95,9 +95,6 @@ export default function JavaScriptDocsPage() {
                 <p className="text-gray-700 text-sm mb-4 leading-relaxed">
                   Import the SDK and initialize it with your API key. The SDK follows a singleton pattern, so you only need to initialize it once in your application. Initialization is synchronous and non-blocking, but you should call it early in your application lifecycle (e.g., in your main entry point or app initialization code).
                 </p>
-                <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                  <strong>Important:</strong> The <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">endpoint</code> must use HTTPS. The SDK will throw an error if you provide an HTTP URL. The default API endpoint is <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">https://api.keverd.com</code>.
-                </p>
                 <CodeSnippet
                   code={String.raw`import { Keverd } from '@keverdjs/fraud-sdk';
 
@@ -107,7 +104,6 @@ Keverd.init('your-api-key-here');
 // Or with full configuration object
 Keverd.init({
   apiKey: 'your-api-key-here',
-  endpoint: 'https://api.keverd.com', // Optional: defaults to https://api.keverd.com
   userId: 'user-123', // Optional: user identifier
   debug: true, // Optional: enable debug logging (default: false)
 });`}
@@ -190,7 +186,7 @@ try {
                       </ul>
                       <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">void</code></p>
                       <p className="text-xs text-gray-600"><strong>Thread Safety:</strong> Initialization is synchronous and safe to call from any thread. The SDK uses a singleton pattern with internal checks to prevent multiple initializations.</p>
-                      <p className="text-xs text-gray-600"><strong>Throws:</strong> No exceptions are thrown. If initialization fails (e.g., invalid endpoint), errors will be logged to the console if <code className="bg-white/50 px-1 rounded border border-gray-200">debug</code> is enabled, but the SDK will still attempt to function with default values.</p>
+                      <p className="text-xs text-gray-600"><strong>Throws:</strong> No exceptions are thrown. If initialization fails, errors will be logged to the console if <code className="bg-white/50 px-1 rounded border border-gray-200">debug</code> is enabled, but the SDK will still attempt to function with default values.</p>
                       <p className="text-xs text-gray-600"><strong>Behavioral Collection:</strong> When initialized, the SDK automatically starts passive behavioral data collection (mouse movements, keyboard events, touch gestures). This collection is non-blocking and does not impact page performance.</p>
                     </div>
                   </div>
@@ -322,13 +318,6 @@ try {
                           <td className="py-3 px-4 text-gray-700">Yes</td>
                           <td className="py-3 px-4 text-gray-700">—</td>
                           <td className="py-3 px-4 text-gray-700">API key for authenticating requests to the Keverd API. Obtain your API key from the <a href="/api-keys" className="text-keverd-blue hover:underline">API Keys page</a> in the dashboard. The API key is sent in the request header as <code className="bg-white/50 px-1 rounded border border-gray-200">x-keverd-key</code>. Keep your API key secure and never commit it to version control. Consider using environment variables or a secure configuration management system.</td>
-                        </tr>
-                        <tr className="border-b border-gray-200">
-                          <td className="py-3 px-4 font-mono text-sm text-keverd-ink">endpoint</td>
-                          <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">string</code></td>
-                          <td className="py-3 px-4 text-gray-700">No</td>
-                          <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">'https://api.keverd.com'</code></td>
-                          <td className="py-3 px-4 text-gray-700">Base URL for the fingerprint API endpoint. Must start with "https://" (HTTP is not allowed for security). The default production endpoint is <code className="bg-white/50 px-1 rounded border border-gray-200">https://api.keverd.com</code>. Only change this if you're using a custom endpoint or testing environment.</td>
                         </tr>
                         <tr className="border-b border-gray-200">
                           <td className="py-3 px-4 font-mono text-sm text-keverd-ink">userId</td>
@@ -481,7 +470,6 @@ try {
 // Initialize SDK (call this once when your app loads)
 Keverd.init({
   apiKey: process.env.REACT_APP_KEVERD_API_KEY, // Use environment variables
-  endpoint: 'https://api.keverd.com',
   debug: process.env.NODE_ENV === 'development' // Enable debug in dev only
 });
 
@@ -608,8 +596,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // SDK not initialized
     console.error('SDK not initialized. Call Keverd.init() first.');
     Keverd.init({
-      apiKey: 'your-api-key-here',
-      endpoint: 'https://api.keverd.com'
+      apiKey: 'your-api-key-here'
     });
     // Retry after initialization
     setTimeout(() => checkRisk(), 100);
@@ -690,7 +677,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h3 className="font-semibold text-keverd-ink mb-3">Security</h3>
                 <ul className="text-sm text-gray-700 ml-4 space-y-2 list-disc leading-relaxed">
                   <li><strong>Protect your API key:</strong> Never expose your API key in client-side code that can be viewed in the browser. Use environment variables or a secure configuration management system.</li>
-                  <li><strong>Use HTTPS:</strong> Always use HTTPS endpoints. The SDK will not work with HTTP endpoints for security reasons.</li>
+                  <li><strong>Secure Communication:</strong> All SDK communication uses HTTPS to ensure secure data transmission.</li>
                   <li><strong>Validate risk scores:</strong> Don't blindly trust risk scores. Use them as one factor in your security decision-making process, along with other signals.</li>
                   <li><strong>Monitor for anomalies:</strong> Set up monitoring and alerting for unusual patterns in risk scores or error rates.</li>
                 </ul>

@@ -32,7 +32,6 @@ const sdkCodeExamples = [
     language: "kotlin",
     code: String.raw`// Initialize SDK
 val config = Config(
-    apiBaseUrl = "https://api.keverd.com",
     apiKey = "YOUR_API_KEY"
 )
 val sdk = KeverdFingerprint.init(context, config)
@@ -56,8 +55,7 @@ sdk.submit("user123") { result ->
 import { Keverd } from '@keverdjs/fraud-sdk';
 
 Keverd.init({
-  apiKey: 'YOUR_API_KEY',
-  endpoint: 'https://api.keverd.com'
+  apiKey: 'YOUR_API_KEY'
 });
 
 // Get visitor data
@@ -73,8 +71,9 @@ import { KeverdProvider } from '@keverdjs/fraud-sdk-react';
 function App() {
   return (
     <KeverdProvider
-      apiKey="YOUR_API_KEY"
-      endpoint="https://api.keverd.com"
+      loadOptions={{
+        apiKey: "YOUR_API_KEY"
+      }}
     >
       <YourApp />
     </KeverdProvider>
@@ -101,8 +100,7 @@ import KeverdPlugin from '@keverdjs/fraud-sdk-vue';
 
 const app = createApp(App);
 app.use(KeverdPlugin, {
-  apiKey: 'YOUR_API_KEY',
-  endpoint: 'https://api.keverd.com'
+  apiKey: 'YOUR_API_KEY'
 });
 
 // Use in components
@@ -127,8 +125,7 @@ import { KeverdModule } from '@keverdjs/fraud-sdk-angular';
 @NgModule({
   imports: [
     KeverdModule.forRoot({
-      apiKey: 'YOUR_API_KEY',
-      endpoint: 'https://api.keverd.com'
+      apiKey: 'YOUR_API_KEY'
     })
   ]
 })

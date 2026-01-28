@@ -2,18 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Book, Home, Key, Code, Menu, X, FileText, LogIn, User, Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cn } from "../lib/utils";
 import { isAuthenticated, getTenantName } from "../lib/auth";
 import { SearchModal } from "./SearchModal";
 
 const navItems = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Getting Started", href: "/getting-started", icon: Code },
-  { label: "API Reference", href: "/docs/api", icon: FileText },
-  { label: "API Keys", href: "/api-keys", icon: Key },
-  { label: "Documentation", href: "/docs", icon: Book },
+  { label: "Home", href: "/" },
+  { label: "Quickstart", href: "/getting-started" },
+  { label: "API Reference", href: "/docs/api" },
+  { label: "API Keys", href: "/api-keys" },
+  { label: "Docs", href: "/docs" },
 ];
 
 export function Navbar() {
@@ -55,7 +54,6 @@ export function Navbar() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
             {navItems.map((item) => {
-              const Icon = item.icon;
               const isActive = pathname === item.href || (item.href !== "/" && pathname?.startsWith(item.href));
               return (
                 <Link
@@ -68,7 +66,6 @@ export function Navbar() {
                       : "text-gray-700 hover:bg-gray-100"
                   )}
                 >
-                  <Icon size={18} />
                   {item.label}
                 </Link>
               );
@@ -80,7 +77,6 @@ export function Navbar() {
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors border border-gray-200"
               aria-label="Search documentation"
             >
-              <Search size={18} />
               <span className="hidden lg:inline">Search</span>
               <kbd className="hidden lg:flex items-center gap-1 px-1.5 py-0.5 bg-gray-100 border border-gray-200 rounded text-xs font-mono text-gray-600">
                 <span>⌘</span>
@@ -96,7 +92,6 @@ export function Navbar() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
               >
-                <User size={18} />
                 <span>{tenantName || "Dashboard"}</span>
               </Link>
             ) : (
@@ -106,7 +101,6 @@ export function Navbar() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-keverd-blue text-white hover:bg-keverd-blue/90 transition-colors"
               >
-                <LogIn size={18} />
                 <span>Sign In</span>
               </Link>
             )}
@@ -115,10 +109,10 @@ export function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+            className="md:hidden px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg border border-gray-200"
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileMenuOpen ? "Close" : "Menu"}
           </button>
         </div>
 
@@ -126,7 +120,6 @@ export function Navbar() {
         {mobileMenuOpen && (
           <nav className="md:hidden pb-4 space-y-1">
             {navItems.map((item) => {
-              const Icon = item.icon;
               const isActive = pathname === item.href || (item.href !== "/" && pathname?.startsWith(item.href));
               return (
                 <Link
@@ -140,7 +133,6 @@ export function Navbar() {
                       : "text-gray-700 hover:bg-gray-100"
                   )}
                 >
-                  <Icon size={18} />
                   {item.label}
                 </Link>
               );
@@ -154,7 +146,6 @@ export function Navbar() {
               }}
               className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors w-full"
             >
-              <Search size={18} />
               <span>Search</span>
             </button>
             
@@ -167,7 +158,6 @@ export function Navbar() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
               >
-                <User size={18} />
                 <span>{tenantName || "Dashboard"}</span>
               </Link>
             ) : (
@@ -178,7 +168,6 @@ export function Navbar() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium bg-keverd-blue text-white hover:bg-keverd-blue/90 transition-colors"
               >
-                <LogIn size={18} />
                 <span>Sign In</span>
               </Link>
             )}
