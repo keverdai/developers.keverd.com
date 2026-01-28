@@ -99,9 +99,6 @@ yarn add @angular/core@^15.0.0 rxjs@^7.0.0`}
                   Import the <code className="bg-white/50 px-1 rounded text-sm border border-gray-200">KeverdModule</code> in your root module (<code className="bg-white/50 px-1 rounded text-sm border border-gray-200">app.module.ts</code>) and configure it using the <code className="bg-white/50 px-1 rounded text-sm border border-gray-200">forRoot()</code> method. This method follows Angular's module configuration pattern and provides the SDK configuration to the dependency injection system.
                 </p>
                 <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                  <strong>Important:</strong> The <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">endpoint</code> must use HTTPS. The SDK will throw an error if you provide an HTTP URL. The default API endpoint is <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">https://api.keverd.com</code>.
-                </p>
-                <p className="text-sm text-gray-600 mb-4 leading-relaxed">
                   <strong>For Angular Standalone Components:</strong> If you're using Angular standalone components (Angular 14+), you can import the <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">KeverdService</code> directly and call <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">init()</code> manually, or use Angular's <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">APP_INITIALIZER</code> to initialize the SDK at application startup.
                 </p>
                 <CodeSnippet
@@ -116,7 +113,6 @@ import { AppComponent } from './app.component';
     BrowserModule,
     KeverdModule.forRoot({
       apiKey: environment.keverdApiKey, // Use environment variables
-      endpoint: 'https://api.keverd.com', // Optional: defaults to https://api.keverd.com
       debug: !environment.production, // Enable debug in dev only
     }),
   ],
@@ -251,13 +247,6 @@ export class AppComponent implements OnInit {
                             <td className="py-3 px-4 text-gray-700">API key for authenticating requests to the Keverd API. Obtain your API key from the <a href="/api-keys" className="text-keverd-blue hover:underline">API Keys page</a> in the dashboard. Keep your API key secure and never commit it to version control. Use environment variables in production.</td>
                           </tr>
                           <tr className="border-b border-gray-200">
-                            <td className="py-3 px-4 font-mono text-sm text-keverd-ink">endpoint</td>
-                            <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">string</code></td>
-                            <td className="py-3 px-4 text-gray-700">No</td>
-                            <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">'https://api.keverd.com'</code></td>
-                            <td className="py-3 px-4 text-gray-700">Base URL for the fingerprint API endpoint. Must start with "https://" (HTTP is not allowed for security). Only change this if you're using a custom endpoint or testing environment.</td>
-                          </tr>
-                          <tr className="border-b border-gray-200">
                             <td className="py-3 px-4 font-mono text-sm text-keverd-ink">debug</td>
                             <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">boolean</code></td>
                             <td className="py-3 px-4 text-gray-700">No</td>
@@ -281,7 +270,6 @@ export class AppComponent implements OnInit {
                     <CodeSnippet
                       code={String.raw`KeverdModule.forRoot({
   apiKey: environment.keverdApiKey,
-  endpoint: 'https://api.keverd.com',
   debug: !environment.production
 })`}
                       language="typescript"
@@ -465,7 +453,6 @@ import { AppComponent } from './app.component';
     BrowserModule,
     KeverdModule.forRoot({
       apiKey: 'your-api-key-here',
-      endpoint: 'https://api.keverd.com',
       debug: false,
     }),
   ],
@@ -683,8 +670,7 @@ this.keverd.getVisitorData()
         // SDK not initialized - initialize and retry
         console.warn('SDK not initialized, initializing...');
         this.keverd.init({
-          apiKey: environment.keverdApiKey,
-          endpoint: 'https://api.keverd.com'
+          apiKey: environment.keverdApiKey
         });
         // Retry after initialization
         return this.keverd.getVisitorData();
@@ -745,7 +731,7 @@ this.keverd.getVisitorData()
                 <h3 className="font-semibold text-keverd-ink mb-3">Security</h3>
                 <ul className="text-sm text-gray-700 ml-4 space-y-2 list-disc leading-relaxed">
                   <li><strong>Protect your API key:</strong> Never expose your API key in client-side code that can be viewed in the browser. Use environment variables or a secure configuration management system.</li>
-                  <li><strong>Use HTTPS:</strong> Always use HTTPS endpoints. The SDK will not work with HTTP endpoints for security reasons.</li>
+                  <li><strong>Secure Communication:</strong> All SDK communication uses HTTPS to ensure secure data transmission.</li>
                   <li><strong>Validate risk scores:</strong> Don't blindly trust risk scores. Use them as one factor in your security decision-making process, along with other signals.</li>
                   <li><strong>Monitor for anomalies:</strong> Set up monitoring and alerting for unusual patterns in risk scores or error rates.</li>
                 </ul>

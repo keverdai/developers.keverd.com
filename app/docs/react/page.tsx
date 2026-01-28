@@ -99,9 +99,6 @@ yarn add react react-dom`}
                   The <code className="bg-white/50 px-1 rounded text-sm border border-gray-200">KeverdProvider</code> component initializes the SDK and provides it to all child components via React Context. Wrap your root component (or the highest component that needs access to the SDK) with <code className="bg-white/50 px-1 rounded text-sm border border-gray-200">KeverdProvider</code>.
                 </p>
                 <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                  <strong>Important:</strong> The <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">endpoint</code> must use HTTPS. The SDK will throw an error if you provide an HTTP URL. The default API endpoint is <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">https://api.keverd.com</code>.
-                </p>
-                <p className="text-sm text-gray-600 mb-4 leading-relaxed">
                   <strong>For Next.js:</strong> Place the provider in your <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">_app.tsx</code> or <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">_app.js</code> file. For Create React App or other React setups, place it in your root <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">App.js</code> or <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">index.js</code>.
                 </p>
                 <CodeSnippet
@@ -113,7 +110,6 @@ function MyApp({ Component, pageProps }) {
     <KeverdProvider
       loadOptions={{
         apiKey: process.env.NEXT_PUBLIC_KEVERD_API_KEY, // Use environment variables
-        endpoint: 'https://api.keverd.com', // Optional: defaults to https://api.keverd.com
         debug: process.env.NODE_ENV === 'development', // Enable debug in dev only
       }}
     >
@@ -263,13 +259,6 @@ export default function Home() {
                             <td className="py-3 px-4 text-gray-700">API key for authenticating requests to the Keverd API. Obtain your API key from the <a href="/api-keys" className="text-keverd-blue hover:underline">API Keys page</a> in the dashboard. Keep your API key secure and never commit it to version control. Use environment variables in production.</td>
                           </tr>
                           <tr className="border-b border-gray-200">
-                            <td className="py-3 px-4 font-mono text-sm text-keverd-ink">endpoint</td>
-                            <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">string</code></td>
-                            <td className="py-3 px-4 text-gray-700">No</td>
-                            <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">'https://api.keverd.com'</code></td>
-                            <td className="py-3 px-4 text-gray-700">Base URL for the fingerprint API endpoint. Must start with "https://" (HTTP is not allowed for security). Only change this if you're using a custom endpoint or testing environment.</td>
-                          </tr>
-                          <tr className="border-b border-gray-200">
                             <td className="py-3 px-4 font-mono text-sm text-keverd-ink">debug</td>
                             <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">boolean</code></td>
                             <td className="py-3 px-4 text-gray-700">No</td>
@@ -287,7 +276,6 @@ export default function Home() {
                       code={String.raw`<KeverdProvider
   loadOptions={{
     apiKey: process.env.NEXT_PUBLIC_KEVERD_API_KEY,
-    endpoint: 'https://api.keverd.com',
     debug: process.env.NODE_ENV === 'development',
   }}
 >
@@ -489,7 +477,6 @@ function App() {
     <KeverdProvider
       loadOptions={{
         apiKey: 'your-api-key-here',
-        endpoint: 'https://api.keverd.com',
         debug: false,
       }}
     >
@@ -685,7 +672,7 @@ useEffect(() => {
                 <h3 className="font-semibold text-keverd-ink mb-3">Security</h3>
                 <ul className="text-sm text-gray-700 ml-4 space-y-2 list-disc leading-relaxed">
                   <li><strong>Protect your API key:</strong> Never expose your API key in client-side code that can be viewed in the browser. Use environment variables or a secure configuration management system.</li>
-                  <li><strong>Use HTTPS:</strong> Always use HTTPS endpoints. The SDK will not work with HTTP endpoints for security reasons.</li>
+                  <li><strong>Secure Communication:</strong> All SDK communication uses HTTPS to ensure secure data transmission.</li>
                   <li><strong>Validate risk scores:</strong> Don't blindly trust risk scores. Use them as one factor in your security decision-making process, along with other signals.</li>
                   <li><strong>Monitor for anomalies:</strong> Set up monitoring and alerting for unusual patterns in risk scores or error rates.</li>
                 </ul>

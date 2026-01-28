@@ -20,8 +20,10 @@ export const metadata: Metadata = {
   }),
   icons: {
     icon: [
-      { url: "/images/logo.png", sizes: "any" },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.ico", type: "image/x-icon" },
     ],
+    shortcut: "/favicon.ico",
     apple: [{ url: "/images/logo.png", sizes: "180x180" }],
   },
   manifest: "/site.webmanifest",

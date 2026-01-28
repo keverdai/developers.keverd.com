@@ -100,9 +100,6 @@ yarn add vue@^3.0.0`}
                   You can use the SDK in two ways: install it as a Vue plugin (recommended for global access) or use the <code className="bg-white/50 px-1 rounded text-sm border border-gray-200">useKeverdProvider</code> composable in your root component.
                 </p>
                 <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                  <strong>Important:</strong> The <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">endpoint</code> must use HTTPS. The SDK will throw an error if you provide an HTTP URL. The default API endpoint is <code className="bg-white/50 px-1 rounded text-xs border border-gray-200">https://api.keverd.com</code>.
-                </p>
-                <p className="text-sm text-gray-600 mb-4 leading-relaxed">
                   <strong>Option A - Plugin Installation (Recommended):</strong> Install the SDK as a Vue plugin for global access across all components.
                 </p>
                 <CodeSnippet
@@ -114,7 +111,6 @@ const app = createApp(App);
 
 app.use(KeverdPlugin, {
   apiKey: process.env.VUE_APP_KEVERD_API_KEY, // Use environment variables
-  endpoint: 'https://api.keverd.com', // Optional: defaults to https://api.keverd.com
   debug: process.env.NODE_ENV === 'development', // Enable debug in dev only
 });
 
@@ -131,7 +127,6 @@ import { useKeverdProvider } from '@keverdjs/fraud-sdk-vue';
 // Setup provider (call once in root component, e.g., App.vue)
 useKeverdProvider({
   apiKey: import.meta.env.VITE_KEVERD_API_KEY,
-  endpoint: 'https://api.keverd.com',
   debug: import.meta.env.DEV
 });
 </script>`}
@@ -256,13 +251,6 @@ const riskLevel = computed(() => {
                             <td className="py-3 px-4 text-gray-700">Yes</td>
                             <td className="py-3 px-4 text-gray-700">—</td>
                             <td className="py-3 px-4 text-gray-700">API key for authenticating requests to the Keverd API. Obtain your API key from the <a href="/api-keys" className="text-keverd-blue hover:underline">API Keys page</a> in the dashboard. Keep your API key secure and never commit it to version control. Use environment variables in production.</td>
-                          </tr>
-                          <tr className="border-b border-gray-200">
-                            <td className="py-3 px-4 font-mono text-sm text-keverd-ink">endpoint</td>
-                            <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">string</code></td>
-                            <td className="py-3 px-4 text-gray-700">No</td>
-                            <td className="py-3 px-4 text-gray-700"><code className="text-keverd-blue">'https://api.keverd.com'</code></td>
-                            <td className="py-3 px-4 text-gray-700">Base URL for the fingerprint API endpoint. Must start with "https://" (HTTP is not allowed for security). Only change this if you're using a custom endpoint or testing environment.</td>
                           </tr>
                           <tr className="border-b border-gray-200">
                             <td className="py-3 px-4 font-mono text-sm text-keverd-ink">debug</td>
@@ -455,7 +443,6 @@ import { useKeverdProvider, useKeverdVisitorData } from '@keverdjs/fraud-sdk-vue
 // Setup provider (in root component)
 useKeverdProvider({
   apiKey: 'your-api-key-here',
-  endpoint: 'https://api.keverd.com',
   debug: false
 });
 
@@ -529,7 +516,6 @@ const app = createApp(App);
 
 app.use(KeverdPlugin, {
   apiKey: 'your-api-key-here',
-  endpoint: 'https://api.keverd.com',
   debug: false
 });
 
@@ -670,7 +656,7 @@ watch(error, (err) => {
                 <h3 className="font-semibold text-keverd-ink mb-3">Security</h3>
                 <ul className="text-sm text-gray-700 ml-4 space-y-2 list-disc leading-relaxed">
                   <li><strong>Protect your API key:</strong> Never expose your API key in client-side code that can be viewed in the browser. Use environment variables or a secure configuration management system.</li>
-                  <li><strong>Use HTTPS:</strong> Always use HTTPS endpoints. The SDK will not work with HTTP endpoints for security reasons.</li>
+                  <li><strong>Secure Communication:</strong> All SDK communication uses HTTPS to ensure secure data transmission.</li>
                   <li><strong>Validate risk scores:</strong> Don't blindly trust risk scores. Use them as one factor in your security decision-making process, along with other signals.</li>
                   <li><strong>Monitor for anomalies:</strong> Set up monitoring and alerting for unusual patterns in risk scores or error rates.</li>
                 </ul>
