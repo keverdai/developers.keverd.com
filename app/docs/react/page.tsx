@@ -9,6 +9,7 @@ import { CheckCircle2, AlertCircle, Info } from "lucide-react";
 const tableOfContents = [
   { id: "installation", title: "Installation" },
   { id: "quick-start", title: "Quick Start" },
+  { id: "session-management", title: "Session Management" },
   { id: "api-reference", title: "API Reference" },
   { id: "keverd-provider", title: "KeverdProvider", level: 2 },
   { id: "use-keverd-visitor-data", title: "useKeverdVisitorData", level: 2 },
@@ -193,6 +194,107 @@ export default function Home() {
 }`}
                   language="javascript"
                 />
+              </div>
+            </div>
+          </section>
+
+          {/* Session Management */}
+          <section id="session-management" className="mb-10 pb-10 border-b border-gray-200">
+            <h2 className="section-title mb-8">Session Management</h2>
+            <p className="text-gray-700 mb-4 leading-relaxed">
+              The React SDK provides comprehensive session management capabilities through the SDK instance. Sessions are automatically started when the SDK is initialized and ended when it's destroyed, but you can also manage them manually using the SDK instance from <code className="bg-white/50 px-1 rounded border border-gray-200">useKeverdContext</code>.
+            </p>
+            
+            <div className="space-y-8">
+              <div className="bg-white/50 rounded-xl p-8 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Accessing Session Methods</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  Use the <code className="bg-white/50 px-1 rounded border border-gray-200">useKeverdContext</code> hook to access the SDK instance and call session methods:
+                </p>
+                <CodeSnippet
+                  code={String.raw`import { useKeverdContext } from '@keverdjs/fraud-sdk-react';
+
+function MyComponent() {
+  const { sdk, isReady } = useKeverdContext();
+
+  const handleStartSession = async () => {
+    if (isReady && sdk) {
+      await sdk.startSession('user-123', undefined, {
+        page: 'checkout'
+      });
+    }
+  };
+
+  const handlePauseSession = async () => {
+    if (isReady && sdk) {
+      await sdk.pauseSession();
+    }
+  };
+
+  const handleResumeSession = async () => {
+    if (isReady && sdk) {
+      await sdk.resumeSession();
+    }
+  };
+
+  const handleGetStatus = async () => {
+    if (isReady && sdk) {
+      const status = await sdk.getSessionStatus();
+      if (status) {
+        console.log('Session:', status.session_id);
+        console.log('Events:', status.event_count);
+      }
+    }
+  };
+
+  const handleEndSession = async () => {
+    if (isReady && sdk) {
+      await sdk.endSession();
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={handleStartSession}>Start Session</button>
+      <button onClick={handlePauseSession}>Pause Session</button>
+      <button onClick={handleResumeSession}>Resume Session</button>
+      <button onClick={handleGetStatus}>Get Status</button>
+      <button onClick={handleEndSession}>End Session</button>
+    </div>
+  );
+}`}
+                  language="javascript"
+                />
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-8 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Session Methods</h3>
+                <div className="space-y-4">
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">sdk.startSession(userId?: string, deviceHash?: string, metadata?: Record&lt;string, unknown&gt;): Promise&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Start a new session. Called automatically on initialization, but can be called manually.</p>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">sdk.endSession(): Promise&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">End the current session. Called automatically when the provider unmounts.</p>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">sdk.pauseSession(): Promise&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Pause the current session (e.g., when app goes to background).</p>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">sdk.resumeSession(): Promise&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Resume a paused session (e.g., when app comes to foreground).</p>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">sdk.getSessionStatus(): Promise&lt;SessionStatus | null&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Get current session status including session ID, status, event count, and duration.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
