@@ -7,19 +7,20 @@ import { SDKNavigation } from "../../components/SDKNavigation";
 import { CheckCircle2, AlertCircle, Info } from "lucide-react";
 
 const tableOfContents = [
-  { id: "installation", title: "Installation" },
-  { id: "quick-start", title: "Quick Start" },
-  { id: "api-reference", title: "API Reference" },
-  { id: "keverd-class", title: "Keverd", level: 2 },
-  { id: "config", title: "SDKConfig", level: 2 },
-  { id: "response-types", title: "Response Types", level: 2 },
-  { id: "data-collection", title: "Data Collection", level: 2 },
-  { id: "complete-example", title: "Complete Example" },
-  { id: "error-handling", title: "Error Handling" },
-  { id: "best-practices", title: "Best Practices" },
-  { id: "risk-score-interpretation", title: "Risk Score Interpretation" },
-  { id: "features", title: "Features" },
-  { id: "browser-support", title: "Browser Support" },
+    { id: "installation", title: "Installation" },
+    { id: "quick-start", title: "Quick Start" },
+    { id: "session-management", title: "Session Management" },
+    { id: "api-reference", title: "API Reference" },
+    { id: "keverd-class", title: "Keverd", level: 2 },
+    { id: "config", title: "SDKConfig", level: 2 },
+    { id: "response-types", title: "Response Types", level: 2 },
+    { id: "data-collection", title: "Data Collection", level: 2 },
+    { id: "complete-example", title: "Complete Example" },
+    { id: "error-handling", title: "Error Handling" },
+    { id: "best-practices", title: "Best Practices" },
+    { id: "risk-score-interpretation", title: "Risk Score Interpretation" },
+    { id: "features", title: "Features" },
+    { id: "browser-support", title: "Browser Support" },
 ];
 
 export default function JavaScriptDocsPage() {
@@ -166,6 +167,189 @@ try {
             </div>
           </section>
 
+          {/* Session Management */}
+          <section id="session-management" className="mb-10 pb-10 border-b border-gray-200">
+            <h2 className="section-title mb-8">Session Management</h2>
+            <p className="text-gray-700 mb-4 leading-relaxed">
+              The SDK provides comprehensive session management capabilities, allowing you to start, pause, resume, and end sessions programmatically. Sessions are automatically started when the SDK is initialized and ended when it's destroyed, but you can also manage them manually for more control.
+            </p>
+            
+            <div className="space-y-8">
+              <div className="bg-white/50 rounded-xl p-8 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Automatic Session Management</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  By default, the SDK automatically manages sessions for you:
+                </p>
+                <ul className="text-sm text-gray-700 ml-4 space-y-2 list-disc leading-relaxed mb-4">
+                  <li><strong>Session starts automatically:</strong> When you call <code className="bg-white/50 px-1 rounded border border-gray-200">init()</code>, a session is automatically started on the server.</li>
+                  <li><strong>Session ends automatically:</strong> When you call <code className="bg-white/50 px-1 rounded border border-gray-200">destroy()</code>, the current session is automatically ended.</li>
+                  <li><strong>Events linked to sessions:</strong> All fingerprint events (from <code className="bg-white/50 px-1 rounded border border-gray-200">getVisitorData()</code> and other methods) are automatically linked to the current session.</li>
+                </ul>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  <strong>Note:</strong> You don't need to manually manage sessions unless you want to pause/resume them or create custom session boundaries.
+                </p>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-8 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Manual Session Management</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  For advanced use cases, you can manually control sessions:
+                </p>
+                <CodeSnippet
+                  code={String.raw`// Start a new session (optional - called automatically on init)
+await Keverd.startSession(
+  'user-123', // Optional: user ID
+  undefined, // Optional: device hash (auto-detected if not provided)
+  { // Optional: custom metadata
+    page: 'checkout',
+    transactionId: 'txn-456'
+  }
+);
+
+// Pause session (e.g., when app goes to background)
+await Keverd.pauseSession();
+
+// Resume session (e.g., when app comes to foreground)
+await Keverd.resumeSession();
+
+// Get current session status
+const status = await Keverd.getSessionStatus();
+if (status) {
+  console.log('Session ID:', status.session_id);
+  console.log('Status:', status.status); // 'active' | 'paused' | 'ended'
+  console.log('Event Count:', status.event_count);
+  console.log('Duration:', status.duration_seconds, 'seconds');
+}
+
+// End session manually (optional - called automatically on destroy)
+await Keverd.endSession();`}
+                  language="javascript"
+                />
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-8 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Session Methods</h3>
+                
+                <div className="space-y-4">
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">startSession(userId?: string, deviceHash?: string, metadata?: Record&lt;string, unknown&gt;): Promise&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Start a new session. Called automatically on <code className="bg-white/50 px-1 rounded border border-gray-200">init()</code>, but can be called manually to create a new session or restart an ended session.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong></p>
+                      <ul className="text-xs text-gray-600 ml-4 space-y-1">
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">userId</code> (optional): User identifier for the session</li>
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">deviceHash</code> (optional): Device hash (auto-detected if not provided)</li>
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">metadata</code> (optional): Custom metadata object to attach to the session</li>
+                      </ul>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;void&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">endSession(): Promise&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">End the current session. Called automatically on <code className="bg-white/50 px-1 rounded border border-gray-200">destroy()</code>, but can be called manually to end a session without destroying the SDK.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong> None</p>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;void&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">pauseSession(): Promise&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Pause the current session. Useful when the app goes to background or when you want to temporarily stop tracking. Events can still be collected, but the session is marked as paused.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong> None</p>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;void&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">resumeSession(): Promise&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Resume a paused session. Call this when the app comes to foreground or when you want to resume tracking after pausing.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong> None</p>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;void&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">getSessionStatus(): Promise&lt;SessionStatus | null&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Get the current session status, including session ID, status, event count, duration, and timestamps.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong> None</p>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;SessionStatus | null&gt;</code> - Session status object or <code className="bg-white/50 px-1 rounded border border-gray-200">null</code> if no active session</p>
+                      <p className="text-xs text-gray-600"><strong>SessionStatus:</strong></p>
+                      <ul className="text-xs text-gray-600 ml-4 space-y-1">
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">session_id</code> (string): Session identifier</li>
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">status</code> (string): 'active' | 'paused' | 'ended'</li>
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">is_active</code> (boolean): Whether session is active</li>
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">is_paused</code> (boolean): Whether session is paused</li>
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">event_count</code> (number): Number of events in this session</li>
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">started_at</code> (string): ISO timestamp when session started</li>
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">last_activity_at</code> (string): ISO timestamp of last activity</li>
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">duration_seconds</code> (number | null): Session duration in seconds</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-8 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Use Cases</h3>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-keverd-ink mb-2">Page Visibility (Background/Foreground)</h4>
+                    <CodeSnippet
+                      code={String.raw`// Pause when page goes to background
+document.addEventListener('visibilitychange', async () => {
+  if (document.hidden) {
+    await Keverd.pauseSession();
+  } else {
+    await Keverd.resumeSession();
+  }
+});`}
+                      language="javascript"
+                    />
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-keverd-ink mb-2">User Login/Logout</h4>
+                    <CodeSnippet
+                      code={String.raw`// Start new session on login
+async function onUserLogin(userId) {
+  await Keverd.startSession(userId, undefined, {
+    loginMethod: 'email',
+    timestamp: new Date().toISOString()
+  });
+}
+
+// End session on logout
+async function onUserLogout() {
+  await Keverd.endSession();
+}`}
+                      language="javascript"
+                    />
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-keverd-ink mb-2">Check Session Status</h4>
+                    <CodeSnippet
+                      code={String.raw`// Check session status periodically
+setInterval(async () => {
+  const status = await Keverd.getSessionStatus();
+  if (status) {
+    console.log('Session ' + status.session_id + ' has ' + status.event_count + ' events');
+    console.log('Duration: ' + status.duration_seconds + 's');
+  }
+}, 60000); // Every minute`}
+                      language="javascript"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* API Reference */}
           <section id="api-reference" className="mb-10 pb-10 border-b border-gray-200">
             <h2 className="section-title mb-8">API Reference</h2>
@@ -281,12 +465,57 @@ try {
                   </div>
 
                   <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
-                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">destroy(): void</h4>
-                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Destroys the SDK instance and stops all data collection. This method stops behavioral data collection, clears the internal configuration, and resets the initialization state. After calling this method, you must call <code className="bg-white/50 px-1 rounded border border-gray-200">init()</code> again before using the SDK.</p>
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">destroy(): Promise&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Destroys the SDK instance and stops all data collection. This method ends the current session, stops behavioral data collection, clears the internal configuration, and resets the initialization state. After calling this method, you must call <code className="bg-white/50 px-1 rounded border border-gray-200">init()</code> again before using the SDK.</p>
                     <div className="mt-3 space-y-1">
                       <p className="text-xs text-gray-600"><strong>Parameters:</strong> None</p>
-                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">void</code></p>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;void&gt;</code> - A promise that resolves when the SDK is destroyed and the session is ended.</p>
                       <p className="text-xs text-gray-600"><strong>Use Cases:</strong> Call this method when you want to stop all SDK activity, such as when a user logs out, when switching to a different API key, or when cleaning up resources. After destroying, you can reinitialize with a new configuration.</p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">startSession(userId?: string, deviceHash?: string, metadata?: Record&lt;string, unknown&gt;): Promise&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Start a new session. Called automatically on <code className="bg-white/50 px-1 rounded border border-gray-200">init()</code>, but can be called manually to create a new session or restart an ended session. See the <a href="#session-management" className="text-keverd-blue hover:underline">Session Management</a> section for details.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong> See <a href="#session-management" className="text-keverd-blue hover:underline">Session Management</a> section</p>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;void&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">endSession(): Promise&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">End the current session. Called automatically on <code className="bg-white/50 px-1 rounded border border-gray-200">destroy()</code>, but can be called manually to end a session without destroying the SDK. See the <a href="#session-management" className="text-keverd-blue hover:underline">Session Management</a> section for details.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong> None</p>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;void&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">pauseSession(): Promise&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Pause the current session. Useful when the app goes to background or when you want to temporarily stop tracking. See the <a href="#session-management" className="text-keverd-blue hover:underline">Session Management</a> section for details.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong> None</p>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;void&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">resumeSession(): Promise&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Resume a paused session. Call this when the app comes to foreground or when you want to resume tracking after pausing. See the <a href="#session-management" className="text-keverd-blue hover:underline">Session Management</a> section for details.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong> None</p>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;void&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">getSessionStatus(): Promise&lt;SessionStatus | null&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Get the current session status, including session ID, status, event count, duration, and timestamps. See the <a href="#session-management" className="text-keverd-blue hover:underline">Session Management</a> section for details.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong> None</p>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;SessionStatus | null&gt;</code> - Session status object or <code className="bg-white/50 px-1 rounded border border-gray-200">null</code> if no active session</p>
                     </div>
                   </div>
                 </div>

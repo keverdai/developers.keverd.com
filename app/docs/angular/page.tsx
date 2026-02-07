@@ -9,6 +9,7 @@ import { CheckCircle2, AlertCircle, Info } from "lucide-react";
 const tableOfContents = [
   { id: "installation", title: "Installation" },
   { id: "quick-start", title: "Quick Start" },
+  { id: "session-management", title: "Session Management" },
   { id: "api-reference", title: "API Reference" },
   { id: "keverd-module", title: "KeverdModule.forRoot", level: 2 },
   { id: "keverd-service", title: "KeverdService", level: 2 },
@@ -201,6 +202,106 @@ export class AppComponent implements OnInit {
             </div>
           </section>
 
+          {/* Session Management */}
+          <section id="session-management" className="mb-10 pb-10 border-b border-gray-200">
+            <h2 className="section-title mb-8">Session Management</h2>
+            <p className="text-gray-700 mb-4 leading-relaxed">
+              The Angular SDK provides comprehensive session management capabilities through RxJS Observables. Sessions are automatically started when the SDK is initialized and ended when it's destroyed, but you can also manage them manually using the <code className="bg-white/50 px-1 rounded border border-gray-200">KeverdService</code>.
+            </p>
+            
+            <div className="space-y-8">
+              <div className="bg-white/50 rounded-xl p-8 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Using Session Methods</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  All session methods return RxJS Observables, allowing you to use RxJS operators for reactive handling:
+                </p>
+                <CodeSnippet
+                  code={String.raw`import { Component } from '@angular/core';
+import { KeverdService } from '@keverdjs/fraud-sdk-angular';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+
+@Component({
+  selector: 'app-session',
+  template: \`
+    <button (click)="startSession()">Start Session</button>
+    <button (click)="pauseSession()">Pause Session</button>
+    <button (click)="resumeSession()">Resume Session</button>
+    <button (click)="getStatus()">Get Status</button>
+    <button (click)="endSession()">End Session</button>
+  \`
+})
+export class SessionComponent {
+  constructor(private keverd: KeverdService) {}
+
+  startSession() {
+    this.keverd.startSession('user-123', undefined, {
+      page: 'checkout'
+    }).pipe(
+      catchError(error => {
+        console.error('Failed to start session:', error);
+        return of(null);
+      })
+    ).subscribe();
+  }
+
+  pauseSession() {
+    this.keverd.pauseSession().subscribe();
+  }
+
+  resumeSession() {
+    this.keverd.resumeSession().subscribe();
+  }
+
+  getStatus() {
+    this.keverd.getSessionStatus().subscribe(status => {
+      if (status) {
+        console.log('Session:', status.session_id);
+        console.log('Events:', status.event_count);
+      }
+    });
+  }
+
+  endSession() {
+    this.keverd.endSession().subscribe();
+  }
+}`}
+                  language="typescript"
+                />
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-8 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Session Methods</h3>
+                <div className="space-y-4">
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">startSession(userId?: string, deviceHash?: string, metadata?: Record&lt;string, unknown&gt;): Observable&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Start a new session. Returns an Observable that completes when the session is started.</p>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">endSession(): Observable&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">End the current session. Returns an Observable that completes when the session is ended.</p>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">pauseSession(): Observable&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Pause the current session. Returns an Observable that completes when the session is paused.</p>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">resumeSession(): Observable&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Resume a paused session. Returns an Observable that completes when the session is resumed.</p>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">getSessionStatus(): Observable&lt;SessionStatus | null&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Get current session status. Returns an Observable that emits the session status or null if no active session.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* API Reference */}
           <section id="api-reference" className="mb-10 pb-10 border-b border-gray-200">
             <h2 className="section-title mb-8">API Reference</h2>
@@ -328,7 +429,7 @@ export class AppComponent implements OnInit {
 
                   <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
                     <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">destroy(): void</h4>
-                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Destroy the SDK instance and stop all data collection. This method stops behavioral data collection, clears the internal configuration, and resets the initialization state. After calling this method, you must call <code className="bg-white/50 px-1 rounded border border-gray-200">init()</code> again before using the SDK.</p>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Destroy the SDK instance and stop all data collection. This method ends the current session, stops behavioral data collection, clears the internal configuration, and resets the initialization state. After calling this method, you must call <code className="bg-white/50 px-1 rounded border border-gray-200">init()</code> again before using the SDK.</p>
                     <div className="mt-3 space-y-1">
                       <p className="text-xs text-gray-600"><strong>Parameters:</strong> None</p>
                       <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">void</code></p>
@@ -343,6 +444,51 @@ export class AppComponent implements OnInit {
                       <p className="text-xs text-gray-600"><strong>Parameters:</strong> None</p>
                       <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">KeverdConfig | null</code> - The current configuration object, or <code className="bg-white/50 px-1 rounded border border-gray-200">null</code> if the SDK is not initialized.</p>
                       <p className="text-xs text-gray-600"><strong>Note:</strong> The returned configuration object is a copy of the internal configuration. Modifying it will not affect the SDK's behavior.</p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">startSession(userId?: string, deviceHash?: string, metadata?: Record&lt;string, unknown&gt;): Observable&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Start a new session. Called automatically on initialization, but can be called manually. Returns an RxJS Observable. See the <a href="#session-management" className="text-keverd-blue hover:underline">Session Management</a> section for details.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong> See <a href="#session-management" className="text-keverd-blue hover:underline">Session Management</a> section</p>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Observable&lt;void&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">endSession(): Observable&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">End the current session. Called automatically on destroy, but can be called manually. Returns an RxJS Observable. See the <a href="#session-management" className="text-keverd-blue hover:underline">Session Management</a> section for details.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong> None</p>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Observable&lt;void&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">pauseSession(): Observable&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Pause the current session. Returns an RxJS Observable. See the <a href="#session-management" className="text-keverd-blue hover:underline">Session Management</a> section for details.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong> None</p>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Observable&lt;void&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">resumeSession(): Observable&lt;void&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Resume a paused session. Returns an RxJS Observable. See the <a href="#session-management" className="text-keverd-blue hover:underline">Session Management</a> section for details.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong> None</p>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Observable&lt;void&gt;</code></p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                    <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">getSessionStatus(): Observable&lt;SessionStatus | null&gt;</h4>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Get current session status. Returns an RxJS Observable that emits the session status. See the <a href="#session-management" className="text-keverd-blue hover:underline">Session Management</a> section for details.</p>
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs text-gray-600"><strong>Parameters:</strong> None</p>
+                      <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Observable&lt;SessionStatus | null&gt;</code></p>
                     </div>
                   </div>
                 </div>
