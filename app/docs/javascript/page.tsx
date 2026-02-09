@@ -5,22 +5,24 @@ import { TableOfContents } from "../../components/TableOfContents";
 import { StructuredData } from "../../components/StructuredData";
 import { SDKNavigation } from "../../components/SDKNavigation";
 import { CheckCircle2, AlertCircle, Info } from "lucide-react";
+import Link from "next/link";
 
 const tableOfContents = [
-    { id: "installation", title: "Installation" },
-    { id: "quick-start", title: "Quick Start" },
+  { id: "installation", title: "Installation" },
+  { id: "quick-start", title: "Quick Start" },
     { id: "session-management", title: "Session Management" },
-    { id: "api-reference", title: "API Reference" },
-    { id: "keverd-class", title: "Keverd", level: 2 },
-    { id: "config", title: "SDKConfig", level: 2 },
-    { id: "response-types", title: "Response Types", level: 2 },
-    { id: "data-collection", title: "Data Collection", level: 2 },
-    { id: "complete-example", title: "Complete Example" },
-    { id: "error-handling", title: "Error Handling" },
-    { id: "best-practices", title: "Best Practices" },
-    { id: "risk-score-interpretation", title: "Risk Score Interpretation" },
-    { id: "features", title: "Features" },
-    { id: "browser-support", title: "Browser Support" },
+  { id: "api-reference", title: "API Reference" },
+  { id: "keverd-class", title: "Keverd", level: 2 },
+  { id: "config", title: "SDKConfig", level: 2 },
+  { id: "response-types", title: "Response Types", level: 2 },
+  { id: "data-collection", title: "Data Collection", level: 2 },
+  { id: "use-cases", title: "Use Case Integration Examples" },
+  { id: "complete-example", title: "Complete Example" },
+  { id: "error-handling", title: "Error Handling" },
+  { id: "best-practices", title: "Best Practices" },
+  { id: "risk-score-interpretation", title: "Risk Score Interpretation" },
+  { id: "features", title: "Features" },
+  { id: "browser-support", title: "Browser Support" },
 ];
 
 export default function JavaScriptDocsPage() {
@@ -417,13 +419,25 @@ setInterval(async () => {
 
                   <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
                     <h4 className="font-mono text-sm font-semibold mb-3 text-keverd-ink">verifyRegistration(metadata?: Record&lt;string, any&gt;): Promise&lt;FingerprintResponse&gt;</h4>
-                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Use-case-specific method for account registration verification. Detects bot signups and suspicious registration patterns.</p>
+                    <p className="text-sm text-gray-700 mb-3 leading-relaxed">Use-case-specific method for account registration verification with <strong>continuous behavioral monitoring</strong>. Detects bot signups, suspicious registration patterns, and mid-session behavior changes.</p>
                     <div className="mt-3 space-y-1">
                       <p className="text-xs text-gray-600"><strong>Parameters:</strong></p>
                       <ul className="text-xs text-gray-600 ml-4 space-y-1">
-                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">metadata</code> (optional): Additional metadata</li>
+                        <li><code className="bg-white/50 px-1 rounded border border-gray-200">metadata</code> (optional): Additional metadata (e.g., email, username)</li>
                       </ul>
                       <p className="text-xs text-gray-600 mt-2"><strong>Returns:</strong> <code className="bg-white/50 px-1 rounded border border-gray-200">Promise&lt;FingerprintResponse&gt;</code></p>
+                      <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <p className="text-xs font-semibold text-blue-900 mb-2">✨ Enhanced Response Includes:</p>
+                        <ul className="text-xs text-blue-800 space-y-1 ml-4 list-disc">
+                          <li><code className="bg-white/50 px-1 rounded">behavior_change</code> - Baseline comparison and behavior change detection</li>
+                          <li><code className="bg-white/50 px-1 rounded">adaptive_response</code> - Recommended actions (MFA, CAPTCHA, etc.)</li>
+                          <li><code className="bg-white/50 px-1 rounded">recommended_action</code> - Suggested challenge level</li>
+                        </ul>
+                        <p className="text-xs text-blue-700 mt-2">
+                          <Info className="inline mr-1" size={12} />
+                          See <Link href="/docs/api#registration-behavioral-monitoring" className="underline">API Documentation</Link> for complete response format and adaptive response handling.
+                        </p>
+                      </div>
                     </div>
                   </div>
 
@@ -607,6 +621,8 @@ setInterval(async () => {
                       <p className="text-xs text-gray-600"><strong>session_id:</strong> Unique session identifier in UUID format. This identifier is generated client-side and is consistent across requests within the same browser session. Use this to track and correlate events, debug issues, or reference the request in support tickets.</p>
                       <p className="text-xs text-gray-600"><strong>requestId:</strong> Unique request identifier in UUID format. This is the same as <code className="bg-white/50 px-1 rounded border border-gray-200">session_id</code> and is included for backward compatibility. Use this to track individual API requests.</p>
                       <p className="text-xs text-gray-600"><strong>sim_swap_engine:</strong> SIM swap detection data. This field is always <code className="bg-white/50 px-1 rounded border border-gray-200">null</code> or <code className="bg-white/50 px-1 rounded border border-gray-200">undefined</code> for web SDKs, as SIM card information is only available on mobile devices. This field is included for API consistency with mobile SDKs.</p>
+                    <p className="text-xs text-gray-600 mt-2"><strong>behavior_change:</strong> (Registration only) Behavioral change analysis comparing current behavior to baseline. Includes <code className="bg-white/50 px-1 rounded border border-gray-200">baseline_available</code>, <code className="bg-white/50 px-1 rounded border border-gray-200">behavior_changed</code>, <code className="bg-white/50 px-1 rounded border border-gray-200">change_score</code>, <code className="bg-white/50 px-1 rounded border border-gray-200">change_reasons</code>, and <code className="bg-white/50 px-1 rounded border border-gray-200">similarity_score</code>.</p>
+                    <p className="text-xs text-gray-600"><strong>adaptive_response:</strong> (Registration only) Recommended adaptive actions based on risk and behavior. Includes <code className="bg-white/50 px-1 rounded border border-gray-200">recommended_action</code>, <code className="bg-white/50 px-1 rounded border border-gray-200">challenges</code> array (e.g., ["captcha", "mfa"]), <code className="bg-white/50 px-1 rounded border border-gray-200">reason</code>, and <code className="bg-white/50 px-1 rounded border border-gray-200">confidence</code>.</p>
                     </div>
                   </div>
                 </div>

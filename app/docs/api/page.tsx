@@ -15,6 +15,9 @@ const tableOfContents = [
   { id: "response-format", title: "Response Format", level: 2 },
   { id: "risk-scores", title: "Risk Score Interpretation", level: 2 },
   { id: "verification-endpoints", title: "Use-Case Verification Endpoints" },
+  { id: "registration-behavioral-monitoring", title: "Registration Behavioral Monitoring", level: 2 },
+  { id: "adaptive-responses", title: "Adaptive Responses", level: 2 },
+  { id: "use-cases", title: "Use Case Integration Examples" },
   { id: "error-handling", title: "Error Handling" },
   { id: "authentication", title: "Authentication" },
   { id: "rate-limiting", title: "Rate Limiting" },
@@ -404,6 +407,225 @@ X-SDK-Source: javascript
             </div>
           </div>
 
+          {/* Enhanced Signals */}
+          <div className="mt-6">
+            <h4 className="font-semibold text-keverd-ink mb-4">Enhanced Signals (Automatically Collected)</h4>
+            <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+              The SDK automatically collects enhanced behavioral signals that are critical for accurate risk scoring, especially for registration use cases. These signals are included automatically in all requests - you don't need to manually collect or send them.
+            </p>
+            
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+              <p className="text-xs font-semibold text-blue-900 mb-2">
+                <Info className="inline mr-1" size={12} />
+                Automatic Collection
+              </p>
+              <p className="text-xs text-blue-800">
+                All enhanced signals are collected automatically in the background from the moment the SDK is initialized. No manual collection or configuration is required.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                <h5 className="font-semibold text-sm text-keverd-ink mb-3">Mouse Signals</h5>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-300">
+                        <th className="text-left py-2 px-3 font-semibold text-keverd-ink text-xs">Field</th>
+                        <th className="text-left py-2 px-3 font-semibold text-keverd-ink text-xs">Type</th>
+                        <th className="text-left py-2 px-3 font-semibold text-keverd-ink text-xs">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">clickCount</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">number</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Total number of mouse clicks detected</td>
+                      </tr>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">totalDistance</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">number</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Total distance mouse moved in pixels</td>
+                      </tr>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">averageVelocity</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">number</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Average mouse movement velocity (pixels/ms)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p className="text-xs text-gray-600 mt-2">
+                  <strong>Used for:</strong> Detecting uniform mouse patterns (bot behavior), measuring user engagement, identifying automation
+                </p>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                <h5 className="font-semibold text-sm text-keverd-ink mb-3">Keyboard Signals</h5>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-300">
+                        <th className="text-left py-2 px-3 font-semibold text-keverd-ink text-xs">Field</th>
+                        <th className="text-left py-2 px-3 font-semibold text-keverd-ink text-xs">Type</th>
+                        <th className="text-left py-2 px-3 font-semibold text-keverd-ink text-xs">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">keydownCount</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">number</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Total number of keydown events</td>
+                      </tr>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">typingSpeed</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">number</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Average typing speed (characters per second)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p className="text-xs text-gray-600 mt-2">
+                  <strong>Used for:</strong> Detecting uniform typing patterns (bot behavior), identifying copy-paste behavior, measuring typing consistency
+                </p>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                <h5 className="font-semibold text-sm text-keverd-ink mb-3">Page Interactions</h5>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-300">
+                        <th className="text-left py-2 px-3 font-semibold text-keverd-ink text-xs">Field</th>
+                        <th className="text-left py-2 px-3 font-semibold text-keverd-ink text-xs">Type</th>
+                        <th className="text-left py-2 px-3 font-semibold text-keverd-ink text-xs">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">clickCount</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">number</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Total page clicks</td>
+                      </tr>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">scrollDepth</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">number</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Maximum scroll depth (0-100%)</td>
+                      </tr>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">timeToFirstInteraction</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">number</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Time to first user interaction in milliseconds</td>
+                      </tr>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">timeOnPage</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">number</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Total time spent on page in milliseconds</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p className="text-xs text-gray-600 mt-2">
+                  <strong>Used for:</strong> Detecting minimal interactions (bot behavior), measuring engagement, identifying fast flows
+                </p>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                <h5 className="font-semibold text-sm text-keverd-ink mb-3">Form Interactions</h5>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-300">
+                        <th className="text-left py-2 px-3 font-semibold text-keverd-ink text-xs">Field</th>
+                        <th className="text-left py-2 px-3 font-semibold text-keverd-ink text-xs">Type</th>
+                        <th className="text-left py-2 px-3 font-semibold text-keverd-ink text-xs">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">focusCount</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">number</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Number of form field focus events</td>
+                      </tr>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">pasteCount</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">number</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Number of paste events (high risk for registration)</td>
+                      </tr>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">autofillDetected</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">boolean</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Whether browser autofill was detected</td>
+                      </tr>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">fieldFocusOrder</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">string[]</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Order in which fields were focused (detects perfect completion)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p className="text-xs text-gray-600 mt-2">
+                  <strong>Used for:</strong> Detecting copy-paste behavior, identifying perfect form completion (bot), measuring form interaction patterns
+                </p>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-4 border border-gray-200">
+                <h5 className="font-semibold text-sm text-keverd-ink mb-3">Privacy Signals</h5>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-300">
+                        <th className="text-left py-2 px-3 font-semibold text-keverd-ink text-xs">Field</th>
+                        <th className="text-left py-2 px-3 font-semibold text-keverd-ink text-xs">Type</th>
+                        <th className="text-left py-2 px-3 font-semibold text-keverd-ink text-xs">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">isIncognito</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">boolean</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Whether browser is in incognito/private mode</td>
+                      </tr>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">isVPN</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">boolean</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Whether VPN or proxy is detected</td>
+                      </tr>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">isAutomated</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">boolean</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Whether automation/bot is detected (high risk)</td>
+                      </tr>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-2 px-3 font-mono text-xs text-keverd-ink">hasAdBlocker</td>
+                        <td className="py-2 px-3 text-gray-700 text-xs"><code className="text-keverd-blue">boolean</code></td>
+                        <td className="py-2 px-3 text-gray-700 text-xs">Whether ad blocker is detected</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p className="text-xs text-gray-600 mt-2">
+                  <strong>Used for:</strong> Detecting automation tools, identifying privacy-focused users, flagging suspicious browser configurations
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-4">
+              <p className="text-xs font-semibold text-green-900 mb-1">
+                <Info className="inline mr-1" size={12} />
+                Why These Signals Matter for Registration
+              </p>
+              <ul className="text-xs text-green-800 space-y-1 ml-4 list-disc">
+                <li><strong>Bot Detection:</strong> Uniform mouse/keyboard patterns indicate automation</li>
+                <li><strong>Behavior Change:</strong> Mid-session changes suggest session hijacking or account sharing</li>
+                <li><strong>Copy-Paste Detection:</strong> Excessive paste events suggest fake account creation</li>
+                <li><strong>Perfect Completion:</strong> Forms filled too quickly or perfectly indicate bots</li>
+                <li><strong>Minimal Interactions:</strong> Low click/scroll counts suggest non-human behavior</li>
+              </ul>
+            </div>
+          </div>
+
           {/* Response Format */}
           <div id="response-format">
             <h3 className="font-semibold text-keverd-ink mb-3 text-lg">Response Format</h3>
@@ -639,6 +861,889 @@ X-SDK-Source: javascript
                 </div>
                 <p className="text-gray-700 text-sm mb-3">Verify account modification requests (email change, phone change, etc.).</p>
                 <p className="text-xs text-gray-600"><strong>Use Case:</strong> Automatically set to <code className="bg-gray-100 px-1 rounded">"account_change"</code></p>
+              </div>
+            </div>
+          </section>
+
+          {/* Registration Behavioral Monitoring */}
+          <section id="registration-behavioral-monitoring" className="mb-10 pb-10 border-b border-gray-200 scroll-mt-20">
+            <h2 className="section-title mb-6">Registration Behavioral Monitoring</h2>
+            
+            <div className="space-y-6">
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Overview</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  The registration verification endpoint provides <strong>continuous behavioral monitoring</strong> from the moment a user starts the registration process. This enables real-time detection of bot signups, behavior changes, and suspicious patterns.
+                </p>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                  <p className="text-xs font-semibold text-blue-900 mb-2">Key Features:</p>
+                  <ul className="text-xs text-blue-800 space-y-1 ml-4 list-disc">
+                    <li><strong>Automatic Baseline:</strong> SDK automatically establishes behavioral baseline from first interactions</li>
+                    <li><strong>Mid-Session Detection:</strong> Detects behavior changes within a single registration session</li>
+                    <li><strong>Enhanced Bot Detection:</strong> Identifies bots, automation, uniform patterns, and non-human behavior</li>
+                    <li><strong>Adaptive Responses:</strong> Recommends MFA, CAPTCHA, or custom flows based on real-time risk</li>
+                    <li><strong>Comprehensive Data Collection:</strong> Automatically collects mouse, keyboard, page, and form interactions</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">How It Works</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  The SDK automatically collects comprehensive behavioral data from the moment it's initialized. No manual data collection is required - everything happens automatically in the background.
+                </p>
+                
+                <div className="space-y-4">
+                  <div className="border-l-4 border-keverd-blue pl-4">
+                    <h4 className="font-semibold text-sm text-keverd-ink mb-2">1. Automatic Data Collection</h4>
+                    <p className="text-xs text-gray-700 mb-2">
+                      When you initialize the SDK, it immediately starts collecting behavioral data automatically:
+                    </p>
+                    <ul className="text-xs text-gray-700 space-y-1 ml-4 list-disc mb-3">
+                      <li><strong>Mouse movements:</strong> Velocity, acceleration, click patterns, movement distance</li>
+                      <li><strong>Keyboard patterns:</strong> Typing speed, dwell time (key hold duration), flight time (time between keys)</li>
+                      <li><strong>Page interactions:</strong> Clicks, scrolls, time on page, scroll depth</li>
+                      <li><strong>Form interactions:</strong> Focus events, copy/paste detection, autofill detection, field focus order</li>
+                      <li><strong>Privacy signals:</strong> Incognito mode, VPN detection, automation detection, ad blocker</li>
+                    </ul>
+                    <CodeSnippet
+                      code={String.raw`// Initialize SDK early (e.g., on page load)
+import { Keverd } from '@keverdjs/fraud-sdk';
+
+// SDK automatically starts collecting data
+Keverd.init('your-api-key');
+
+// No additional setup required - data collection happens automatically`}
+                      language="javascript"
+                    />
+                    <p className="text-xs text-gray-600 mt-2">
+                      <Info className="inline mr-1" size={12} />
+                      The SDK establishes a behavioral baseline automatically from the first interactions. This baseline is used to detect behavior changes during registration.
+                    </p>
+                  </div>
+
+                  <div className="border-l-4 border-keverd-blue pl-4">
+                    <h4 className="font-semibold text-sm text-keverd-ink mb-2">2. Registration Verification</h4>
+                    <p className="text-xs text-gray-700 mb-2">
+                      Call the registration verification endpoint when the user submits the registration form. The SDK automatically includes all collected behavioral data.
+                    </p>
+                    <CodeSnippet
+                      code={String.raw`// JavaScript SDK - Complete registration flow
+import { Keverd } from '@keverdjs/fraud-sdk';
+
+// Initialize early (e.g., in your app entry point)
+Keverd.init('your-api-key');
+
+// Later, when user submits registration form
+async function handleRegistrationSubmit(formData) {
+  // Verify registration - SDK automatically includes all collected data
+  const result = await Keverd.verifyRegistration({
+    email: formData.email,
+    username: formData.username
+  });
+  
+  // Handle response based on risk level
+  if (result.action === 'allow') {
+    // Low risk - proceed with registration
+    await createUserAccount(formData);
+  } else if (result.action === 'soft_challenge') {
+    // Medium risk - show recommended challenges
+    const challenges = result.adaptive_response?.challenges || [];
+    if (challenges.includes('captcha')) {
+      await showCaptcha();
+    }
+    if (challenges.includes('mfa')) {
+      await sendEmailVerification(formData.email);
+    }
+  } else if (result.action === 'block') {
+    // High risk - block registration
+    showError('Registration blocked due to security concerns');
+  }
+}
+
+// React SDK
+import { useKeverdContext } from '@keverdjs/fraud-sdk-react';
+
+function RegistrationForm() {
+  const { verifyRegistration } = useKeverdContext();
+  
+  const handleSubmit = async (formData) => {
+    const result = await verifyRegistration({
+      email: formData.email,
+      username: formData.username
+    });
+    // Handle result...
+  };
+}`}
+                      language="javascript"
+                    />
+                  </div>
+
+                  <div className="border-l-4 border-keverd-blue pl-4">
+                    <h4 className="font-semibold text-sm text-keverd-ink mb-2">3. Session Management</h4>
+                    <p className="text-xs text-gray-700 mb-2">
+                      The SDK automatically maintains a session ID that links all events together. Session continuity is maintained throughout the registration flow without any manual intervention.
+                    </p>
+                    <CodeSnippet
+                      code={String.raw`// Session is automatically managed by SDK
+// All events in the same session are linked
+// Session persists from SDK init to page unload
+// No manual session management required`}
+                      language="javascript"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Data Automatically Collected</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  The SDK automatically collects all the following data - you don't need to manually send anything:
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-sm mb-2">Device Information</h4>
+                    <ul className="text-xs text-gray-700 space-y-1">
+                      <li>• Screen resolution</li>
+                      <li>• Timezone</li>
+                      <li>• Language/locale</li>
+                      <li>• User agent</li>
+                      <li>• Device fingerprint</li>
+                    </ul>
+                  </div>
+                  
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-sm mb-2">Mouse Signals</h4>
+                    <ul className="text-xs text-gray-700 space-y-1">
+                      <li>• Click count</li>
+                      <li>• Movement distance</li>
+                      <li>• Average velocity</li>
+                      <li>• Movement patterns</li>
+                    </ul>
+                  </div>
+                  
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-sm mb-2">Keyboard Signals</h4>
+                    <ul className="text-xs text-gray-700 space-y-1">
+                      <li>• Typing speed</li>
+                      <li>• Keydown count</li>
+                      <li>• Dwell time (key hold)</li>
+                      <li>• Flight time (between keys)</li>
+                    </ul>
+                  </div>
+                  
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-sm mb-2">Page Interactions</h4>
+                    <ul className="text-xs text-gray-700 space-y-1">
+                      <li>• Click count</li>
+                      <li>• Scroll depth</li>
+                      <li>• Time to first interaction</li>
+                      <li>• Time on page</li>
+                    </ul>
+                  </div>
+                  
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-sm mb-2">Form Interactions</h4>
+                    <ul className="text-xs text-gray-700 space-y-1">
+                      <li>• Focus/blur events</li>
+                      <li>• Copy/paste detection</li>
+                      <li>• Autofill detection</li>
+                      <li>• Field focus order</li>
+                    </ul>
+                  </div>
+                  
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-sm mb-2">Privacy Signals</h4>
+                    <ul className="text-xs text-gray-700 space-y-1">
+                      <li>• Incognito mode</li>
+                      <li>• VPN/proxy detection</li>
+                      <li>• Automation detection</li>
+                      <li>• Ad blocker detection</li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-4">
+                  <p className="text-xs font-semibold text-green-900 mb-1">
+                    <Info className="inline mr-1" size={12} />
+                    All data collection is automatic
+                  </p>
+                  <p className="text-xs text-green-800">
+                    You don't need to manually collect or send any of this data. The SDK handles everything automatically when you call <code className="bg-green-100 px-1 rounded">verifyRegistration()</code>.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Response Format</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  The registration verification endpoint returns enhanced response data including behavioral analysis:
+                </p>
+                <CodeSnippet
+                  code={String.raw`{
+  "risk_score": 45,
+  "action": "soft_challenge",
+  "reason": [
+    "behavior_shift_detected",
+    "typing_speed_changed",
+    "uniform_typing_pattern"
+  ],
+  "session_id": "session-uuid",
+  "request_id": "request-uuid",
+  "score": 0.45,
+  
+  // Behavioral change analysis
+  "behavior_change": {
+    "baseline_available": true,
+    "behavior_changed": true,
+    "change_score": 35.5,
+    "change_reasons": [
+      "typing_speed_changed",
+      "mouse_pattern_changed"
+    ],
+    "similarity_score": 62.3
+  },
+  
+  // Adaptive response recommendations
+  "adaptive_response": {
+    "recommended_action": "soft_challenge",
+    "challenges": ["mfa", "captcha"],
+    "reason": "Behavior change detected during registration",
+    "confidence": 0.85
+  }
+}`}
+                  language="json"
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* Adaptive Responses */}
+          <section id="adaptive-responses" className="mb-10 pb-10 border-b border-gray-200 scroll-mt-20">
+            <h2 className="section-title mb-6">Adaptive Responses</h2>
+            
+            <div className="space-y-6">
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Understanding Adaptive Responses</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  Based on real-time risk assessment and behavioral analysis, the API recommends specific actions to take. You should implement these recommendations to create an adaptive registration flow.
+                </p>
+                
+                <div className="space-y-4 mt-4">
+                  <div className="border-l-4 border-green-500 pl-4">
+                    <h4 className="font-semibold text-sm text-keverd-ink mb-2">Allow (Low Risk)</h4>
+                    <p className="text-xs text-gray-700 mb-2">
+                      <code className="bg-gray-100 px-1 rounded">action: "allow"</code> - Registration appears legitimate. Proceed with account creation.
+                    </p>
+                    <CodeSnippet
+                      code={String.raw`if (result.action === "allow") {
+  // Proceed with registration
+  await createUserAccount(userData);
+}`}
+                      language="javascript"
+                    />
+                  </div>
+
+                  <div className="border-l-4 border-yellow-500 pl-4">
+                    <h4 className="font-semibold text-sm text-keverd-ink mb-2">Soft Challenge (Medium Risk)</h4>
+                    <p className="text-xs text-gray-700 mb-2">
+                      <code className="bg-gray-100 px-1 rounded">action: "soft_challenge"</code> - Some suspicious signals detected. Require additional verification.
+                    </p>
+                    <CodeSnippet
+                      code={String.raw`if (result.action === "soft_challenge") {
+  // Check adaptive_response for recommended challenges
+  const challenges = result.adaptive_response?.challenges || [];
+  
+  if (challenges.includes("captcha")) {
+    // Show CAPTCHA
+    await showCaptcha();
+  }
+  
+  if (challenges.includes("mfa")) {
+    // Request email/SMS verification
+    await sendVerificationCode(userEmail);
+  }
+  
+  // After challenge completion, verify again
+  const recheck = await keverd.verifyRegistration();
+  if (recheck.action === "allow") {
+    await createUserAccount(userData);
+  }
+}`}
+                      language="javascript"
+                    />
+                  </div>
+
+                  <div className="border-l-4 border-orange-500 pl-4">
+                    <h4 className="font-semibold text-sm text-keverd-ink mb-2">Hard Challenge (High Risk)</h4>
+                    <p className="text-xs text-gray-700 mb-2">
+                      <code className="bg-gray-100 px-1 rounded">action: "hard_challenge"</code> - Multiple suspicious signals. Require strong verification.
+                    </p>
+                    <CodeSnippet
+                      code={String.raw`if (result.action === "hard_challenge") {
+  // Require multiple verification steps
+  await showCaptcha();
+  await sendVerificationCode(userEmail);
+  await sendVerificationCode(userPhone);
+  
+  // Verify all challenges passed
+  const allVerified = await verifyAllChallenges();
+  if (allVerified) {
+    const recheck = await keverd.verifyRegistration();
+    if (recheck.action === "allow") {
+      await createUserAccount(userData);
+    }
+  }
+}`}
+                      language="javascript"
+                    />
+                  </div>
+
+                  <div className="border-l-4 border-red-500 pl-4">
+                    <h4 className="font-semibold text-sm text-keverd-ink mb-2">Block (Very High Risk)</h4>
+                    <p className="text-xs text-gray-700 mb-2">
+                      <code className="bg-gray-100 px-1 rounded">action: "block"</code> - Clear bot or fraud indicators. Block registration.
+                    </p>
+                    <CodeSnippet
+                      code={String.raw`if (result.action === "block") {
+  // Block registration
+  showError("Registration blocked due to security concerns");
+  // Optionally log for review
+  logSuspiciousRegistration(result);
+}`}
+                      language="javascript"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Behavior Change Indicators</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  The <code className="bg-gray-100 px-1 rounded">behavior_change</code> object provides detailed information about behavioral anomalies:
+                </p>
+                
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-xs font-semibold text-keverd-ink mb-1">baseline_available</p>
+                    <p className="text-xs text-gray-700">Whether a behavioral baseline exists (automatically established from first interactions)</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-xs font-semibold text-keverd-ink mb-1">behavior_changed</p>
+                    <p className="text-xs text-gray-700">Whether behavior deviated from baseline during the session</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-xs font-semibold text-keverd-ink mb-1">change_score</p>
+                    <p className="text-xs text-gray-700">0-100 score indicating severity of behavior change (higher = more suspicious)</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-xs font-semibold text-keverd-ink mb-1">similarity_score</p>
+                    <p className="text-xs text-gray-700">0-100 percentage similarity to baseline (higher = more similar, lower = more suspicious)</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-xs font-semibold text-keverd-ink mb-1">change_reasons</p>
+                    <p className="text-xs text-gray-700">List of specific reasons for behavior change (e.g., "typing_speed_changed", "mouse_pattern_changed")</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Complete Integration Example</h3>
+                <CodeSnippet
+                  code={String.raw`// React example
+import { useKeverdContext } from '@keverdjs/fraud-sdk-react';
+
+function RegistrationForm() {
+  const { verifyRegistration } = useKeverdContext();
+  const [step, setStep] = useState('form');
+  
+  const handleSubmit = async (formData) => {
+    try {
+      // Verify registration with behavioral monitoring
+      const result = await verifyRegistration({
+        email: formData.email,
+        username: formData.username
+      });
+      
+      // Check risk level
+      if (result.action === "block") {
+        // Block registration
+        showError("Registration blocked. Please contact support.");
+        return;
+      }
+      
+      if (result.action === "hard_challenge") {
+        // Require multiple verifications
+        setStep('challenge');
+        await showCaptcha();
+        await sendEmailVerification(formData.email);
+        await sendSMSVerification(formData.phone);
+        return;
+      }
+      
+      if (result.action === "soft_challenge") {
+        // Check recommended challenges
+        const challenges = result.adaptive_response?.challenges || [];
+        
+        if (challenges.includes("captcha")) {
+          await showCaptcha();
+        }
+        
+        if (challenges.includes("mfa")) {
+          await sendEmailVerification(formData.email);
+        }
+        
+        // Re-verify after challenges
+        const recheck = await verifyRegistration();
+        if (recheck.action !== "allow") {
+          showError("Verification failed. Please try again.");
+          return;
+        }
+      }
+      
+      // Behavior change detected?
+      if (result.behavior_change?.behavior_changed) {
+        console.warn("Behavior change detected:", result.behavior_change.change_reasons);
+        // Log for review or require additional verification
+        if (result.behavior_change.change_score > 50) {
+          await sendEmailVerification(formData.email);
+        }
+      }
+      
+      // Proceed with registration
+      await createUserAccount(formData);
+      showSuccess("Account created successfully!");
+      
+    } catch (error) {
+      console.error("Registration verification failed:", error);
+      showError("Registration failed. Please try again.");
+    }
+  };
+  
+  return (
+    // Your registration form JSX
+  );
+}`}
+                  language="javascript"
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* Use Cases */}
+          <section id="use-cases" className="mb-10 pb-10 border-b border-gray-200 scroll-mt-20">
+            <h2 className="section-title mb-6">Use Case Integration Examples</h2>
+            
+            <div className="space-y-8">
+              {/* Registration Use Case */}
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4 text-lg">Registration Flow</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  Complete registration flow with behavioral monitoring, bot detection, and adaptive challenges.
+                </p>
+                
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-sm text-keverd-ink mb-2">Vanilla JavaScript</h4>
+                    <CodeSnippet
+                      code={String.raw`import { Keverd } from '@keverdjs/fraud-sdk';
+
+// 1. Initialize SDK early (e.g., in your app entry point)
+Keverd.init('your-api-key');
+
+// 2. Registration form handler
+async function handleRegistrationSubmit(formData) {
+  try {
+    // Verify registration - SDK automatically includes all collected data
+    const result = await Keverd.verifyRegistration({
+      email: formData.email,
+      username: formData.username
+    });
+    
+    // Handle based on risk level
+    if (result.action === 'block') {
+      // High risk - block registration
+      showError('Registration blocked due to security concerns');
+      logSecurityEvent('blocked_registration', result);
+      return;
+    }
+    
+    if (result.action === 'hard_challenge') {
+      // High risk - require multiple verifications
+      await showCaptcha();
+      await sendEmailVerification(formData.email);
+      await sendSMSVerification(formData.phone);
+      
+      // Re-verify after challenges
+      const recheck = await Keverd.verifyRegistration();
+      if (recheck.action !== 'allow') {
+        showError('Verification failed. Please contact support.');
+        return;
+      }
+    }
+    
+    if (result.action === 'soft_challenge') {
+      // Medium risk - show recommended challenges
+      const challenges = result.adaptive_response?.challenges || [];
+      
+      if (challenges.includes('captcha')) {
+        const captchaValid = await showCaptcha();
+        if (!captchaValid) {
+          showError('CAPTCHA verification failed');
+          return;
+        }
+      }
+      
+      if (challenges.includes('mfa')) {
+        await sendEmailVerification(formData.email);
+      }
+      
+      // Re-verify after challenges
+      const recheck = await Keverd.verifyRegistration();
+      if (recheck.action !== 'allow') {
+        showError('Verification failed. Please try again.');
+        return;
+      }
+    }
+    
+    // Check for behavior changes
+    if (result.behavior_change?.behavior_changed) {
+      console.warn('Behavior change detected:', result.behavior_change.change_reasons);
+      // Log for review or require additional verification
+      if (result.behavior_change.change_score > 50) {
+        await sendEmailVerification(formData.email);
+      }
+    }
+    
+    // All checks passed - create account
+    const account = await createUserAccount(formData);
+    showSuccess('Account created successfully!');
+    return account;
+    
+  } catch (error) {
+    console.error('Registration verification failed:', error);
+    showError('Registration failed. Please try again.');
+  }
+}`}
+                      language="javascript"
+                    />
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold text-sm text-keverd-ink mb-2">React</h4>
+                    <CodeSnippet
+                      code={String.raw`import { useKeverdContext } from '@keverdjs/fraud-sdk-react';
+
+function RegistrationForm() {
+  const { verifyRegistration } = useKeverdContext();
+  const [loading, setLoading] = useState(false);
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    const formData = {
+      email: e.target.email.value,
+      username: e.target.username.value,
+      password: e.target.password.value
+    };
+    
+    try {
+      const result = await verifyRegistration({
+        email: formData.email,
+        username: formData.username
+      });
+      
+      if (result.action === 'block') {
+        setError('Registration blocked. Please contact support.');
+        return;
+      }
+      
+      if (result.action === 'soft_challenge' || result.action === 'hard_challenge') {
+        const challenges = result.adaptive_response?.challenges || [];
+        
+        // Show challenges based on recommendations
+        if (challenges.includes('captcha')) {
+          await showCaptcha();
+        }
+        if (challenges.includes('mfa')) {
+          await sendEmailVerification(formData.email);
+        }
+        
+        // Re-verify
+        const recheck = await verifyRegistration();
+        if (recheck.action !== 'allow') {
+          setError('Verification failed.');
+          return;
+        }
+      }
+      
+      // Create account
+      await createAccount(formData);
+      router.push('/dashboard');
+      
+    } catch (error) {
+      setError('Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* Your form fields */}
+    </form>
+  );
+}`}
+                      language="javascript"
+                    />
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold text-sm text-keverd-ink mb-2">Vue.js</h4>
+                    <CodeSnippet
+                      code={String.raw`<script setup>
+import { useKeverdProvider } from '@keverdjs/fraud-sdk-vue';
+
+const { verifyRegistration } = useKeverdProvider();
+const loading = ref(false);
+const error = ref(null);
+
+const handleSubmit = async (formData) => {
+  loading.value = true;
+  error.value = null;
+  
+  try {
+    const result = await verifyRegistration({
+      email: formData.email,
+      username: formData.username
+    });
+    
+    if (result.action === 'block') {
+      error.value = 'Registration blocked. Please contact support.';
+      return;
+    }
+    
+    if (result.action !== 'allow') {
+      const challenges = result.adaptive_response?.challenges || [];
+      // Handle challenges...
+    }
+    
+    await createAccount(formData);
+    router.push('/dashboard');
+    
+  } catch (err) {
+    error.value = 'Registration failed. Please try again.';
+  } finally {
+    loading.value = false;
+  }
+};
+</script>`}
+                      language="javascript"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Login Use Case */}
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4 text-lg">Login Flow</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  Detect account takeover attempts and credential stuffing during login.
+                </p>
+                
+                <CodeSnippet
+                  code={String.raw`import { Keverd } from '@keverdjs/fraud-sdk';
+
+async function handleLogin(email, password) {
+  try {
+    // Verify login attempt
+    const result = await Keverd.verifyLogin(email);
+    
+    if (result.action === 'block') {
+      // Block login - potential account takeover
+      showError('Login blocked due to security concerns');
+      logSecurityEvent('blocked_login', { email, result });
+      return;
+    }
+    
+    // Proceed with authentication
+    const authResult = await authenticateUser(email, password);
+    
+    if (!authResult.success) {
+      return;
+    }
+    
+    // If high risk, require MFA even after successful password
+    if (result.action === 'hard_challenge') {
+      const mfaValid = await requestMFA();
+      if (!mfaValid) {
+        showError('MFA verification failed');
+        return;
+      }
+    }
+    
+    // Login successful
+    redirectToDashboard();
+    
+  } catch (error) {
+    console.error('Login verification failed:', error);
+    showError('Login failed. Please try again.');
+  }
+}`}
+                  language="javascript"
+                />
+              </div>
+
+              {/* Checkout Use Case */}
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4 text-lg">Checkout Flow</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  Verify payment transactions and detect payment fraud.
+                </p>
+                
+                <CodeSnippet
+                  code={String.raw`import { Keverd } from '@keverdjs/fraud-sdk';
+
+async function handleCheckout(cart, paymentMethod) {
+  try {
+    // Verify checkout
+    const result = await Keverd.verifyCheckout(
+      cart.total,
+      cart.currency,
+      {
+        paymentMethod: paymentMethod.type,
+        cardLast4: paymentMethod.last4,
+        items: cart.items.length
+      }
+    );
+    
+    if (result.action === 'block') {
+      // Block transaction
+      showError('Transaction blocked due to security concerns');
+      logSecurityEvent('blocked_transaction', { amount: cart.total, result });
+      return;
+    }
+    
+    if (result.action === 'hard_challenge') {
+      // Require payment verification
+      const verified = await requestPayment2FA();
+      if (!verified) {
+        showError('Payment verification failed');
+        return;
+      }
+    }
+    
+    // Proceed with payment
+    const paymentResult = await processPayment(cart, paymentMethod);
+    if (paymentResult.success) {
+      showSuccess('Payment processed successfully!');
+    }
+    
+  } catch (error) {
+    console.error('Checkout verification failed:', error);
+    showError('Payment failed. Please try again.');
+  }
+}`}
+                  language="javascript"
+                />
+              </div>
+
+              {/* Password Reset Use Case */}
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4 text-lg">Password Reset Flow</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  Detect account takeover attempts during password reset requests.
+                </p>
+                
+                <CodeSnippet
+                  code={String.raw`import { Keverd } from '@keverdjs/fraud-sdk';
+
+async function handlePasswordReset(email) {
+  try {
+    // Verify password reset request
+    const result = await Keverd.verifyPasswordReset(email);
+    
+    if (result.action === 'block') {
+      // Block password reset - potential account takeover
+      showError('Password reset blocked. Please contact support.');
+      logSecurityEvent('blocked_password_reset', { email, result });
+      return;
+    }
+    
+    if (result.action === 'hard_challenge') {
+      // Require additional verification
+      const verified = await sendVerificationCode(email);
+      if (!verified) {
+        showError('Verification failed');
+        return;
+      }
+    }
+    
+    // Send password reset email
+    await sendPasswordResetEmail(email);
+    showSuccess('Password reset email sent!');
+    
+  } catch (error) {
+    console.error('Password reset verification failed:', error);
+    showError('Password reset failed. Please try again.');
+  }
+}`}
+                  language="javascript"
+                />
+              </div>
+
+              {/* Account Change Use Case */}
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4 text-lg">Account Change Flow</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  Verify sensitive account modifications (email, phone, password changes).
+                </p>
+                
+                <CodeSnippet
+                  code={String.raw`import { Keverd } from '@keverdjs/fraud-sdk';
+
+async function handleEmailChange(currentEmail, newEmail) {
+  try {
+    // Verify account change
+    const result = await Keverd.verifyAccountChange('email', {
+      oldEmail: currentEmail,
+      newEmail: newEmail
+    });
+    
+    if (result.action === 'block') {
+      showError('Email change blocked. Please contact support.');
+      return;
+    }
+    
+    if (result.action === 'hard_challenge') {
+      // Require verification from both emails
+      await sendVerificationCode(currentEmail);
+      await sendVerificationCode(newEmail);
+      
+      const bothVerified = await verifyBothCodes();
+      if (!bothVerified) {
+        showError('Verification failed');
+        return;
+      }
+    }
+    
+    // Proceed with email change
+    await updateUserEmail(newEmail);
+    showSuccess('Email updated successfully!');
+    
+  } catch (error) {
+    console.error('Account change verification failed:', error);
+    showError('Email change failed. Please try again.');
+  }
+}`}
+                  language="javascript"
+                />
               </div>
             </div>
           </section>

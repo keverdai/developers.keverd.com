@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { CodeSnippet } from "../../components/CodeSnippet";
 import { TableOfContents } from "../../components/TableOfContents";
 import { StructuredData } from "../../components/StructuredData";
@@ -493,6 +494,22 @@ function MyComponent() {
   reasons: string[];            // Array of risk reasons
   sessionId: string;            // Session identifier (UUID)
   requestId: string;            // Request identifier (UUID, same as sessionId)
+  
+  // Registration-specific fields (when using verifyRegistration via SDK)
+  behavior_change?: {           // Behavioral change analysis
+    baseline_available: boolean;
+    behavior_changed: boolean;
+    change_score: number;
+    change_reasons: string[];
+    similarity_score?: number;
+  };
+  adaptive_response?: {          // Adaptive response recommendations
+    recommended_action: string;
+    challenges: string[];
+    reason: string;
+    confidence: number;
+  };
+  
   simSwapEngine?: {             // SIM swap detection results (null for web SDKs)
     risk: number;
     flags: {
@@ -520,6 +537,142 @@ function MyComponent() {
                     <p className="text-xs text-gray-600"><strong>confidence:</strong> Confidence score as a float between 0.0 and 1.0. This is the inverse of the risk score (confidence = 1.0 - score). Higher values indicate higher confidence in the assessment.</p>
                   </div>
                 </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Registration Behavioral Monitoring */}
+          <section id="registration-behavioral-monitoring" className="mb-10 pb-10 border-b border-gray-200 scroll-mt-20">
+            <h2 className="section-title mb-8">Registration Behavioral Monitoring</h2>
+            
+            <div className="space-y-6">
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Overview</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  For registration flows, use the SDK's <code className="bg-white/50 px-1 rounded border border-gray-200">verifyRegistration</code> method (available via <code className="bg-white/50 px-1 rounded border border-gray-200">useKeverdContext</code>) to enable continuous behavioral monitoring. This provides enhanced bot detection and behavior change analysis.
+                </p>
+                
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                  <p className="text-xs font-semibold text-blue-900 mb-2">Key Features:</p>
+                  <ul className="text-xs text-blue-800 space-y-1 ml-4 list-disc">
+                    <li><strong>Automatic Baseline:</strong> SDK automatically establishes behavioral baseline from first interactions</li>
+                    <li><strong>Session Tracking:</strong> All events in a registration session are linked together</li>
+                    <li><strong>Behavior Change Detection:</strong> Detects mid-session behavior deviations</li>
+                    <li><strong>Adaptive Responses:</strong> Receives recommendations for MFA, CAPTCHA, or custom flows</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Registration Flow Example</h3>
+                <CodeSnippet
+                  code={String.raw`import { useKeverdContext } from '@keverdjs/fraud-sdk-react';
+import { useState } from 'react';
+
+function RegistrationForm() {
+  const { sdk, isReady } = useKeverdContext();
+  const [step, setStep] = useState('form');
+  const [error, setError] = useState<string | null>(null);
+  
+  const handleSubmit = async (formData: RegistrationFormData) => {
+    if (!isReady || !sdk) {
+      setError('SDK not ready');
+      return;
+    }
+    
+    try {
+      // Verify registration with behavioral monitoring
+      const result = await sdk.verifyRegistration({
+        email: formData.email,
+        username: formData.username
+      });
+      
+      // Check risk level and adaptive response
+      if (result.action === 'block') {
+        setError('Registration blocked due to security concerns');
+        return;
+      }
+      
+      // Handle challenges based on adaptive response
+      if (result.action === 'hard_challenge' || result.action === 'soft_challenge') {
+        const challenges = result.adaptive_response?.challenges || [];
+        
+        if (challenges.includes('captcha')) {
+          setStep('captcha');
+          // Show CAPTCHA component
+        }
+        
+        if (challenges.includes('mfa')) {
+          setStep('mfa');
+          // Send verification code
+          await sendVerificationCode(formData.email);
+        }
+        
+        // After challenges, re-verify
+        const recheck = await sdk.verifyRegistration();
+        if (recheck.action !== 'allow') {
+          setError('Verification failed. Please try again.');
+          return;
+        }
+      }
+      
+      // Check for behavior changes
+      if (result.behavior_change?.behavior_changed) {
+        console.warn('Behavior change detected:', result.behavior_change.change_reasons);
+        
+        // If significant change, require additional verification
+        if (result.behavior_change.change_score > 50) {
+          await sendEmailVerification(formData.email);
+          setStep('verify-email');
+          return;
+        }
+      }
+      
+      // Proceed with registration
+      await createUserAccount(formData);
+      setStep('success');
+      
+    } catch (err) {
+      console.error('Registration verification failed:', err);
+      setError('Registration failed. Please try again.');
+    }
+  };
+  
+  return (
+    // Your registration form JSX
+  );
+}`}
+                  language="javascript"
+                />
+              </div>
+
+              <div className="bg-white/50 rounded-xl p-6 border border-gray-200">
+                <h3 className="font-semibold text-keverd-ink mb-4">Understanding the Response</h3>
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                  The <code className="bg-white/50 px-1 rounded border border-gray-200">verifyRegistration</code> response includes enhanced fields for behavioral monitoring:
+                </p>
+                
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-xs font-semibold text-keverd-ink mb-1">action</p>
+                    <p className="text-xs text-gray-700">Recommended action: <code className="bg-gray-100 px-1 rounded">"allow"</code>, <code className="bg-gray-100 px-1 rounded">"soft_challenge"</code>, <code className="bg-gray-100 px-1 rounded">"hard_challenge"</code>, or <code className="bg-gray-100 px-1 rounded">"block"</code></p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-xs font-semibold text-keverd-ink mb-1">behavior_change</p>
+                    <p className="text-xs text-gray-700">Object containing baseline comparison, behavior change detection, similarity score, and change reasons</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-xs font-semibold text-keverd-ink mb-1">adaptive_response</p>
+                    <p className="text-xs text-gray-700">Recommended challenges (MFA, CAPTCHA) and confidence level</p>
+                  </div>
+                </div>
+                
+                <p className="text-xs text-gray-600 mt-4">
+                  <Info className="inline mr-1" size={12} />
+                  See <Link href="/docs/api#registration-behavioral-monitoring" className="underline">API Documentation</Link> for complete response format and handling guide.
+                </p>
               </div>
             </div>
           </section>
