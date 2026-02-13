@@ -18,6 +18,8 @@ const tableOfContents = [
   { id: "registration-behavioral-monitoring", title: "Registration Behavioral Monitoring", level: 2 },
   { id: "adaptive-responses", title: "Adaptive Responses", level: 2 },
   { id: "use-cases", title: "Use Case Integration Examples" },
+  { id: "login-protection", title: "Login Protection" },
+  { id: "login-backend-examples", title: "Backend Integration Examples", level: 2 },
   { id: "error-handling", title: "Error Handling" },
   { id: "authentication", title: "Authentication" },
   { id: "rate-limiting", title: "Rate Limiting" },
@@ -1743,6 +1745,197 @@ async function handleEmailChange(currentEmail, newEmail) {
   }
 }`}
                   language="javascript"
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* Login Protection Guide */}
+          <section id="login-protection" className="mb-10 pb-10 border-b border-gray-200 scroll-mt-20">
+            <h2 className="section-title mb-4">Login Protection</h2>
+            <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+              The <code className="bg-gray-100 px-1 rounded text-xs border border-gray-200">/fingerprint/verify/login</code> endpoint is designed
+              to protect your login flows against account takeover (ATO), credential stuffing, and session hijacking.
+              It combines device fingerprinting, behavioral analysis, and login history signals to produce a
+              <strong> login-specific risk score</strong>, <strong>device reputation</strong>, and
+              <strong> adaptive response</strong>.
+            </p>
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-semibold text-keverd-ink mb-2 text-lg">Request Schema (high level)</h3>
+                <p className="text-gray-700 text-sm mb-3 leading-relaxed">
+                  The endpoint accepts the same fingerprint payload as <code className="bg-gray-100 px-1 rounded text-xs border border-gray-200">/fingerprint/score</code>,
+                  plus an optional <code className="bg-gray-100 px-1 rounded text-xs border border-gray-200">login</code> object for structured context:
+                </p>
+                <CodeSnippet
+                  code={String.raw`POST https://api.keverd.com/fingerprint/verify/login
+Content-Type: application/json
+x-keverd-key: your-api-key
+
+{
+  // Standard fingerprint payload (device, session, behavioral, etc.)
+  "device": { ... },
+  "session": { "sessionId": "session_123", "timestamp": "..." },
+  "behavioral": { ... },
+  "privacySignals": { ... },
+
+  // Optional, but strongly recommended:
+  "login": {
+    "identifier_hash": "sha256:9f2b...",
+    "result": "success" | "failure",
+    "failure_reason": "wrong_password" | "locked_out" | null,
+    "auth_method": "password" | "password_otp" | "sso" | "magic_link" | "passkey" | "unknown",
+    "mfa_used": true | false | null,
+    "attempt_id": "your-login-attempt-id"
+  }
+}`}
+                  language="http"
+                />
+                <p className="text-xs text-gray-600 mt-2">
+                  The SDKs handle the fingerprint payload automatically. You only need to supply the
+                  <code className="bg-gray-100 px-1 rounded text-[11px] border border-gray-200">login</code> context (or flat fields like
+                  <code className="bg-gray-100 px-1 rounded text-[11px] border border-gray-200">login_identifier_hash</code>) where relevant.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-keverd-ink mb-2 text-lg">Response Highlights</h3>
+                <p className="text-gray-700 text-sm mb-3 leading-relaxed">
+                  In addition to the standard <code className="bg-gray-100 px-1 rounded text-xs border border-gray-200">FingerprintResponse</code> fields,
+                  login verification enriches the response with:
+                </p>
+                <ul className="text-sm text-gray-700 list-disc ml-6 space-y-1">
+                  <li>
+                    <code className="bg-gray-100 px-1 rounded text-xs border border-gray-200">device_match?: boolean</code> – whether this device has
+                    been seen on <em>successful</em> logins for this identifier before.
+                  </li>
+                  <li>
+                    <code className="bg-gray-100 px-1 rounded text-xs border border-gray-200">behavior_change?: ...</code> – when a baseline exists,
+                    indicates mid-session behavior drift versus the user's normal profile.
+                  </li>
+                  <li>
+                    <code className="bg-gray-100 px-1 rounded text-xs border border-gray-200">adaptive_response?: {"{ recommended_action, challenges[] }"}</code> –
+                    login-specific recommended action (<code>allow</code> / <code>soft_challenge</code> /
+                    <code>hard_challenge</code> / <code>block</code>) and suggested challenges such as
+                    <code>["mfa","captcha","reenter_password"]</code>.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* Backend Integration Examples for Login */}
+          <section id="login-backend-examples" className="mb-10 pb-10 border-b border-gray-200 scroll-mt-20">
+            <h2 className="section-title mb-4">Backend Integration Examples (Login)</h2>
+            <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+              These examples show how to wire Keverd's login verification into your backend flows using the
+              <strong> identifier hash</strong> and <strong>adaptive responses</strong> to drive step-up authentication.
+            </p>
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-semibold text-keverd-ink mb-2 text-base">
+                  Node / Express (email + password)
+                </h3>
+                <CodeSnippet
+                  code={String.raw`import crypto from "crypto";
+import fetch from "node-fetch";
+
+function hashIdentifier(email) {
+  const hex = crypto.createHash("sha256").update(email.toLowerCase()).digest("hex");
+  return \`sha256:\${hex}\`;
+}
+
+// Login route
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  // 1) Pre-check with Keverd (optional, no result yet)
+  const identifierHash = hashIdentifier(email);
+
+  // 2) Perform your normal authentication
+  const authResult = await authenticateUser(email, password); // your function
+
+  const loginResult = authResult.success ? "success" : "failure";
+  const failureReason = authResult.success ? null : "wrong_password";
+
+  // 3) Call Keverd verifyLogin with structured login context
+  const response = await fetch("https://api.keverd.com/fingerprint/verify/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-keverd-key": process.env.KEVERD_API_KEY,
+    },
+    body: JSON.stringify({
+      // SDKs will send device/session/behavioral; if calling directly, include them here.
+      login: {
+        identifier_hash: identifierHash,
+        result: loginResult,
+        failure_reason: failureReason,
+        auth_method: "password",
+        mfa_used: false,
+        attempt_id: authResult.attemptId,
+      },
+    }),
+  });
+
+  const verify = await response.json();
+
+  // 4) Map adaptive_response to your auth UX
+  if (verify.recommended_action === "block") {
+    return res.status(403).json({ error: "Login blocked for security reasons." });
+  }
+
+  if (verify.recommended_action === "hard_challenge") {
+    // Enforce strong MFA before issuing session
+    return res.status(202).json({ challenge: "mfa_required", verify });
+  }
+
+  if (!authResult.success) {
+    return res.status(401).json({ error: "Invalid credentials." });
+  }
+
+  // success + allow / soft_challenge
+  return res.status(200).json({ user: authResult.user, risk: verify });
+});`}
+                  language="javascript"
+                />
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-keverd-ink mb-2 text-base">
+                  Next.js / NextAuth-style flow (conceptual)
+                </h3>
+                <p className="text-gray-700 text-xs mb-2 leading-relaxed">
+                  In NextAuth or similar auth frameworks, you typically hook into the credential provider's
+                  <code className="bg-gray-100 px-1 rounded text-[11px] border border-gray-200">authorize</code> callback,
+                  call <code className="bg-gray-100 px-1 rounded text-[11px] border border-gray-200">verifyLogin</code>,
+                  and then decide whether to continue or require step-up authentication.
+                </p>
+                <CodeSnippet
+                  code={String.raw`// Pseudocode: inside NextAuth credentials provider
+async authorize(credentials, req) {
+  const { email, password } = credentials;
+  const identifierHash = await hashLoginIdentifier(email); // use Keverd helper on frontend or backend
+
+  const authResult = await authenticateUser(email, password);
+
+  const verify = await keverdVerifyLogin({
+    login: {
+      identifier_hash: identifierHash,
+      result: authResult.success ? "success" : "failure",
+      auth_method: "password",
+      mfa_used: false,
+      attempt_id: authResult.attemptId,
+    },
+  });
+
+  if (verify.recommended_action === "block") return null;
+  if (!authResult.success) return null;
+
+  // Optionally store verify.recommended_action / behavior_change in session for UI
+  return { id: authResult.user.id, email, keverd: verify };
+}`}
+                  language="typescript"
                 />
               </div>
             </div>
