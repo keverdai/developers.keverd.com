@@ -29,6 +29,19 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
 };
 
+function V2Banner() {
+  return (
+    <a
+      href="https://v2.developer.keverd.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block w-full bg-keverd-blue text-white text-center py-2.5 px-4 text-sm font-medium hover:bg-keverd-blue/90 transition-colors"
+    >
+      🚀 New: Check out our improved docs at v2.developer.keverd.com →
+    </a>
+  );
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -42,6 +55,7 @@ export default function RootLayout({
           fontFamily: "var(--font-base)",
         }}
       >
+        <V2Banner />
         {children}
         <Analytics />
       </body>
